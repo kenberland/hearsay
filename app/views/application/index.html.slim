@@ -1,0 +1,7 @@
+.home
+  .image
+    img.title-image.img-circle src=current_user.image
+  .name
+    = "#{current_user.first_name} #{current_user.last_name}"
+  .connections
+    = @connections.to_s
