@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
   end
 
   def index
-    client = LinkedIn::Client.new
-    client.authorize_from_access(current_user.token, current_user.secret)
-    @connections = client.connections
+    @api = Koala::Facebook::API.new(current_user.token)
+    @connections = @api.get_connections('me', 'friends?fields=id,name,picture.type(large)', 
+                                        { :limit => 5}, :batch_args => { :name => "get-friends" }
+                                        )
   end
-
 end

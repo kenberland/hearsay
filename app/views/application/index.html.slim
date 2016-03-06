@@ -4,4 +4,11 @@
   .name
     = "#{current_user.first_name} #{current_user.last_name}"
   .connections
-    = @connections.to_s
+    - @connections.each do |connection|
+      .connection
+        .name
+          = connection['name']
+        .id
+          = connection['id']
+        .image
+          img src=connection['picture']['data']['url']
