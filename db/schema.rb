@@ -13,35 +13,39 @@
 
 ActiveRecord::Schema.define(version: 20160306203048) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "tags", force: :cascade do |t|
     t.string   "tag"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "tags", ["tag"], name: "index_tags_on_tag", unique: true
+  add_index "tags", ["tag"], name: "index_tags_on_tag", unique: true, using: :btree
 
   create_table "user_tags", force: :cascade do |t|
     t.integer  "tag_id"
-    t.integer  "from_user_id"
-    t.integer  "to_user_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "from_user_uid", limit: 8
+    t.integer  "to_user_uid",   limit: 8
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
-  add_index "user_tags", ["from_user_id"], name: "index_user_tags_on_from_user_id"
-  add_index "user_tags", ["tag_id"], name: "index_user_tags_on_tag_id"
-  add_index "user_tags", ["to_user_id"], name: "index_user_tags_on_to_user_id"
+  add_index "user_tags", ["from_user_uid"], name: "index_user_tags_on_from_user_uid", using: :btree
+  add_index "user_tags", ["tag_id"], name: "index_user_tags_on_tag_id", using: :btree
+  add_index "user_tags", ["to_user_uid"], name: "index_user_tags_on_to_user_uid", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "uid"
+    t.integer  "uid",        limit: 8
     t.string   "first_name"
     t.string   "last_name"
     t.string   "image"
     t.string   "token"
     t.string   "secret"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
+  add_foreign_key "user_tags", "tags"
 end
