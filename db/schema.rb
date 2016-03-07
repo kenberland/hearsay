@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160306202419) do
+ActiveRecord::Schema.define(version: 20160306203048) do
 
   create_table "tags", force: :cascade do |t|
     t.string   "tag"
@@ -20,6 +20,18 @@ ActiveRecord::Schema.define(version: 20160306202419) do
   end
 
   add_index "tags", ["tag"], name: "index_tags_on_tag", unique: true
+
+  create_table "user_tags", force: :cascade do |t|
+    t.integer  "tag_id"
+    t.integer  "from_user_id"
+    t.integer  "to_user_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "user_tags", ["from_user_id"], name: "index_user_tags_on_from_user_id"
+  add_index "user_tags", ["tag_id"], name: "index_user_tags_on_tag_id"
+  add_index "user_tags", ["to_user_id"], name: "index_user_tags_on_to_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "uid"
