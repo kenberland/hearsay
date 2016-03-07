@@ -7,10 +7,11 @@ class ApplicationController < ActionController::Base
   end
 
   def get_connections
-    #TODO Rails.cache this
-    @connections = api.get_connections('me', 'friends?fields=id,name,picture.type(large)', 
-                                       { :limit => 5}, :batch_args => { :name => "get-friends" }
-                                       )
+    @connections = Rails.cache.fetch("#{current_user.uid}/connections", expires_in: 12.hours) do
+      api.get_connections('me', 'friends?fields=id,name,picture.type(large)',
+                          { :limit => 5}, :batch_args => { :name => "get-friends" }
+                          )
+    end
   end
 
   def current_user= user
