@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20160306203048) do
     t.datetime "updated_at",              null: false
   end
 
+  add_index "user_tags", ["from_user_uid", "to_user_uid", "tag_id"], name: "index_user_tags_unique_on_to_from_tag", unique: true, using: :btree
   add_index "user_tags", ["from_user_uid"], name: "index_user_tags_on_from_user_uid", using: :btree
   add_index "user_tags", ["tag_id"], name: "index_user_tags_on_tag_id", using: :btree
   add_index "user_tags", ["to_user_uid"], name: "index_user_tags_on_to_user_uid", using: :btree

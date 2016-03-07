@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   private
 
   def get_tags
-    current_user.tags
+    User.find_by_uid(params[:id]).tags rescue []
   end
 
   def get_fb_profile
