@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   skip_before_filter :verify_authenticity_token
+  skip_before_filter :get_connections
 
   def create
     @user = User.find_or_create_by({ uid: auth_hash.uid })

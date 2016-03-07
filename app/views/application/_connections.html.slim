@@ -1,0 +1,10 @@
+.connections.well.container-fluid
+  p = t('main.your-connections')
+  ul.connections
+    - @connections.each do |connection|
+      a href = user_path(connection['id'])
+        li.connection
+          .image
+            img src=connection['picture']['data']['url']
+          .name
+            = connection['name']
