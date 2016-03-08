@@ -1,4 +1,6 @@
 .tags
   ul
     - @tags.each do |tag|
-      li = tag.tag
+      li.tags.btn.btn-default
+        span class=(@my_tags.include?(tag.id) ? 'my-tag' : '')
+          = tag.tag

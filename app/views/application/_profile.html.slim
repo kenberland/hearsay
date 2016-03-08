@@ -1,3 +1,4 @@
 .profile
-  img src="#{@profile[1]}"
-  h3 = "#{@profile[0]['name']}"
+  img src=@profile[:image]
+  h3
+    | #{@profile[:first_name]} #{@profile[:last_name]}

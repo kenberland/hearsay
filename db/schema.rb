@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20160306203048) do
   enable_extension "plpgsql"
 
   create_table "tags", force: :cascade do |t|
-    t.string   "tag"
+    t.string   "tag",        null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 20160306203048) do
 
   create_table "user_tags", force: :cascade do |t|
     t.integer  "tag_id"
-    t.integer  "from_user_uid", limit: 8
-    t.integer  "to_user_uid",   limit: 8
+    t.integer  "from_user_uid", limit: 8, null: false
+    t.integer  "to_user_uid",   limit: 8, null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20160306203048) do
   add_index "user_tags", ["to_user_uid"], name: "index_user_tags_on_to_user_uid", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.integer  "uid",        limit: 8
+    t.integer  "uid",        limit: 8, null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "image"

@@ -1,7 +1,7 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
-      t.integer :uid, unsigned: true, limit: 8
+      t.integer :uid, unsigned: true, limit: 8, null: false
       t.string :first_name
       t.string :last_name
       t.string :image
