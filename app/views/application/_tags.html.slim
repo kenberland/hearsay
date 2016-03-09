@@ -7,6 +7,6 @@ div.tags.well.well-sm id="tag-management"
             span.glyphicon.glyphicon-tag
             = tag.tag
             span.badge 3
-            a.delete-tag = link_to user_tag_path(params[:id],tag.id), remote: true, method: :delete
+            a data-destroy="tag-cloud-li-#{tag.id}" data-remote="true" href="#{user_tag_path(params[:id],tag.id)}" rel="nofollow" data-method="delete"
               span.glyphicon.glyphicon-remove
 
