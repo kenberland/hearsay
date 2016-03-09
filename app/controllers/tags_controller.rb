@@ -9,6 +9,11 @@ class TagsController < ApplicationController
     redirect_to :back
   end
 
+  def destroy
+    UserTag.find_by(tag_id: params[:id], from_user_uid: current_user.uid, to_user_uid: params[:user_id]).destroy rescue nil
+    render json: {}
+  end
+
   private
 
   def tag_params
