@@ -1,6 +1,13 @@
+span.glyphicon.glyphicon-tag
+
 .tags
   ul
     - @tags.each do |tag|
-      li.tags.btn.btn-default
-        span class=(@my_tags.include?(tag.id) ? 'my-tag' : '')
-          = tag.tag
+      li
+        span class=(@my_tags.include?(tag.id) ? 'user-owned-tag' : '')
+          span.label.label-info.label-fatter
+            span.glyphicon.glyphicon-tag
+              = tag.tag
+              span.badge 3
+            a href="/remove-tag"
+              span.glyphicon.glyphicon-remove
