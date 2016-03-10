@@ -1,11 +1,20 @@
 class UsersController < ApplicationController
   protect_from_forgery with: :exception
+  before_action :load_fb_profile
+  before_action :load_user
 
   def show
-    @profile = get_fb_profile
-    @user = find_or_create_user @profile
     @tags = get_tags(@user)
     @my_tags = get_my_tags(@user)
+
+    respond_to do |format|
+      format.json do
+        render json: { tags: @tags, my_tags: @my_tags }.to_json
+      end
+      format.html do
+        render
+      end
+    end
   end
 
   private
@@ -35,8 +44,12 @@ class UsersController < ApplicationController
     end
   end
 
-  def get_fb_profile
-    {
+  def load_user
+    @user = find_or_create_user @profile
+  end
+
+  def load_fb_profile
+    @profile = {
       first_name: fetch_profile[0]['name'].split(/\s+/).first,
       last_name: fetch_profile[0]['name'].split(/\s+/).last,
       image: fetch_profile[1],
