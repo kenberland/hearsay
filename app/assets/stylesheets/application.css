@@ -14,4 +14,6 @@
  *= require_self
  *= require bootstrap_and_overrides
  *= require hearsay
- */
+ *= require owl.carousel
+ *= require owl.theme
+*/
