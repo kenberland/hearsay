@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :users, only: [:show] do
     resources :tags, only: [:create, :destroy]
   end
+  resources :connections, only: [:show]
 end
