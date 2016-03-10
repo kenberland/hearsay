@@ -8,6 +8,7 @@ $(function() {
   })
   $(".owl-carousel").owlCarousel({
     singleItem: true,
-    lazyLoad: true
+    lazyLoad: true,
+    pagination: false
   });
 });
