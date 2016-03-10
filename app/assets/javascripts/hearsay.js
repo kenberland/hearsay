@@ -6,5 +6,8 @@ $(function() {
   $(".user-profile").each(function(i) {
     $(this).load("/connections/" + i)
   })
-  $(".owl-carousel").owlCarousel();
+  $(".owl-carousel").owlCarousel({
+    singleItem: true,
+    lazyLoad: true
+  });
 });
