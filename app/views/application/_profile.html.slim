@@ -1,4 +1,4 @@
 .profile
-  img src=@profile[:image]
+  img src=@connection.url
   h3
-    | #{@profile[:first_name]} #{@profile[:last_name]}
+    = @connection.name

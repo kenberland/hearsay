@@ -7,10 +7,8 @@ class ApplicationController < ActionController::Base
   end
 
   def get_connections
-    @connections = Rails.cache.fetch("#{current_user.uid}/connections", expires_in: 12.hours) do
-      api.get_connections('me', 'friends?fields=id,name,picture.type(large)',
-                          { :limit => 5}, :batch_args => { :name => "get-friends" }
-                          )
+    @connections = Rails.cache.fetch("#{current_user.uid}/connections", expires_in: 10.minutes) do
+      Connections.new fetch_connections
     end
   end
 
@@ -25,4 +23,51 @@ class ApplicationController < ActionController::Base
 
   def index
   end
+
+  private
+
+  def fetch_connections
+    api.get_connections('me', 'friends?fields=id,name,picture.type(large)',
+                        { :limit => 5}, :batch_args => { :name => "get-friends" }
+                        )
+  end
+
+  def find_or_create_user attr
+    User.find_or_create_by(trim_hash(attr))
+  end
+
+  def trim_hash attr
+    attr.slice(:uid, :first_name, :last_name)
+  end
+
+  def get_tags uid
+    User.find_by_uid(uid).tags rescue []
+  end
+
+  def get_my_tags user
+    User.find_by_uid(user.uid).user_tags.from_user(current_user.uid).map &:tag_id
+  end
+
+  def fetch_profile
+    Rails.cache.fetch("#{params[:id]}/profile", expires_in: 12.hours) do
+      api.batch do |batch_api|
+        batch_api.get_object params[:id]
+        batch_api.get_picture params[:id], :type => "large"
+      end
+    end
+  end
+
+  def load_user
+    @user = find_or_create_user @profile
+  end
+
+  def load_fb_profile
+    @profile = {
+      first_name: fetch_profile[0]['name'].split(/\s+/).first,
+      last_name: fetch_profile[0]['name'].split(/\s+/).last,
+      image: fetch_profile[1],
+      uid: params[:id]
+    }
+  end
+
 end
