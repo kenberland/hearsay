@@ -24,6 +24,5 @@ class ApplicationController < ActionController::Base
   end
 
   def index
-    redirect_to user_path(current_user.uid)
   end
 end

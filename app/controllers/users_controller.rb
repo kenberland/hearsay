@@ -6,15 +6,7 @@ class UsersController < ApplicationController
   def show
     @tags = get_tags(@user)
     @my_tags = get_my_tags(@user)
-
-    respond_to do |format|
-      format.json do
-        render json: { tags: @tags, my_tags: @my_tags }.to_json
-      end
-      format.html do
-        render
-      end
-    end
+    render layout: false
   end
 
   private
