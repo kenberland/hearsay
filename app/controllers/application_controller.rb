@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :get_connections
+  before_action :get_tag_categories
 
   def api
     @api ||= Koala::Facebook::API.new(current_user.token)
@@ -10,6 +11,10 @@ class ApplicationController < ActionController::Base
     @connections = Rails.cache.fetch("#{current_user.uid}/connections", expires_in: 10.minutes) do
       Connections.new fetch_connections
     end
+  end
+
+  def get_tag_categories
+    @tag_categories = TagCategory.all.map &:category
   end
 
   def current_user= user

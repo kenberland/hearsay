@@ -7,7 +7,7 @@ $(function() {
     $(this).load("/connections/" + i)
   })
   $(".tag_library").each(function(i) {
-    $(this).load("/tag_library/0")
+    $(this).load("/tag_library/" + this.dataset.category )
   })
   $(".owl-carousel").owlCarousel({
     singleItem: true,
