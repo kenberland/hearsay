@@ -1,6 +1,7 @@
 div.tags.well.well-sm id="tag-management"
   span.glyphicon.glyphicon-tag
   span.glyphicon.glyphicon-tag
+  h1 = @tags.first.tag_category.category
   ul
     - @tags.each do |tag|
       li.tag-cloud id="tag-cloud-li-#{tag.id}"
