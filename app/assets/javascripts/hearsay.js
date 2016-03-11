@@ -6,6 +6,9 @@ $(function() {
   $(".user-profile").each(function(i) {
     $(this).load("/connections/" + i)
   })
+  $(".tag_library").each(function(i) {
+    $(this).load("/tag_library/0")
+  })
   $(".owl-carousel").owlCarousel({
     singleItem: true,
     lazyLoad: true,
