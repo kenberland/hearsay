@@ -1,10 +1,11 @@
 div.tags.well.well-sm id="tag-management"
+  span.glyphicon.glyphicon-tag
+  span.glyphicon.glyphicon-tag
   ul
     - @tags.each do |tag|
       li.tag-cloud id="tag-cloud-li-#{tag.id}"
         span class=(@my_tags.include?(tag.id) ? 'user-owned-tag' : '')
           span.label.label-fatter
-            span.glyphicon.glyphicon-tag
             = tag.tag
             span.badge 3
             a data-destroy="tag-cloud-li-#{tag.id}" data-remote="true" href="#{user_tag_path(params[:id],tag.id)}" rel="nofollow" data-method="delete"
