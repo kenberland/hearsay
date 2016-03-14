@@ -6,5 +6,5 @@ Rails.application.routes.draw do
     resources :tags, only: [:create, :destroy]
   end
   resources :connections, only: [:show]
-  resources :tag_library, only: [:show]
+  resources :tag_library, only: [:show], param: :category
 end
