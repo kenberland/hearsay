@@ -32,17 +32,9 @@ class ApplicationController < ActionController::Base
   private
 
   def fetch_connections
-    api.get_connections('me', 'friends?fields=id,name,picture.type(large)',
+    api.get_connections('me', 'friends?fields=id,name,picture.type(large),first_name,last_name',
                         { :limit => 5}, :batch_args => { :name => "get-friends" }
                         )
-  end
-
-  def find_or_create_user attr
-    User.find_or_create_by(trim_hash(attr))
-  end
-
-  def trim_hash attr
-    attr.slice(:uid, :first_name, :last_name)
   end
 
   def get_tags uid

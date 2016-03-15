@@ -7,7 +7,8 @@ div.tags.well.well-sm id="tag-management"
         span class=(@my_tags.include?(tag.id) ? 'user-owned-tag' : '')
           span.label.label-fatter
             = tag.tag
-            span.badge 3
+            span.badge
+              = tag.count(@connection.uid)
             a data-destroy="tag-cloud-li-#{tag.id}" data-remote="true" href="#{user_tag_path(params[:id],tag.id)}" rel="nofollow" data-method="delete"
               span.glyphicon.glyphicon-remove
 
