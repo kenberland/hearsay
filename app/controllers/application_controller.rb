@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  before_action :get_connections
-  before_action :get_tag_categories
+  before_action :get_connections, except: :status
+  before_action :get_tag_categories, except: :status
 
   def api
     @api ||= Koala::Facebook::API.new(current_user.token)
@@ -27,6 +27,11 @@ class ApplicationController < ActionController::Base
   end
 
   def index
+  end
+
+  def status
+    ActiveRecord::Base.connection.execute('SELECT now()')
+    render json: {status: 'OK'}.merge(ActiveRecord::Base.connection.execute('SELECT NOW()').first).to_json
   end
 
   private
