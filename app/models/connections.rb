@@ -13,7 +13,7 @@ class Connections
   end
 
   def [](y)
-   connections[y % connections.size]
+    connections[y % count]
   end
 
 end
