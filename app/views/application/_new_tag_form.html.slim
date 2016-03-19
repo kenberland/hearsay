@@ -1,3 +1,6 @@
-= form_for Tag.new, url: user_tags_path(@connection.uid) do |f|
-  = f.text_field :tag
-  = f.submit
+div.tags.well.well-sm id="tag-management"
+  h1
+    | Add Yoru Own Tag
+  = form_for Tag.new, url: user_tags_path(current_user.uid) do |f|
+    = f.text_field :tag
+    = f.submit
