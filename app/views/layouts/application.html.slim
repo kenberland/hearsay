@@ -22,19 +22,29 @@ html lang='en'
     <![endif]-->
 
   body
-    div.navbar.navbar-default.navbar-static-top
-      div.container
-        button.navbar-toggle type='button' data-toggle='collapse' data-target='.navbar-responsive-collapse'
-          span.icon-bar
-        a.navbar-brand href='#'
-          = Hearsay::Application.config.company_name
-        div.navbar-collapse.collapse.navbar-responsive-collapse
-          ul.nav.navbar-nav
-            li = link_to 'Me', '/'
-            li = link_to "#{t('navigation.logout')} #{current_user.first_name}", '/path2'
-    div.container
-      = bootstrap_flash
+    div id="wrap"
+      .navbar.navbar-default.navbar-fixed-top
+        .container
+          .navbar-header
+            button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-collapse"
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.navbar-brand href="#"
+              = Hearsay::Application.config.company_name
+          .collapse.navbar-collapse
+            ul.nav.navbar-nav
+              li.active
+                a href="#"
+                  | Home
+              li
+                a href="#about"
+                  | About
+              li
+                a href="#contact"
+                  | Contact
       = yield
-      footer
-        p
+    div id="footer"
+      .container
+        p.lead
           | &copy; #{Hearsay::Application.config.company_name} #{Time.now.strftime('%Y')}

@@ -1,5 +1,9 @@
-.container
-  .col-xs-4
+.row
+  .col-xs-6
     = render 'profile'
-  .col-xs-8
+  .col-xs-6
+    h1
+      = @connection.name
+.row
+  .col-xs-12
     = render 'tags'
