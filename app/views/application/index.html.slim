@@ -5,9 +5,8 @@
         - 5.times do |idx|
           .user-profile id="user-profile-#{idx}"
   .center-row
-    .col-xs-12
-      .owl-carousel
-        - @tag_categories[0..0].each do |category|
-          .tag_library id="tag-library-#{category}" data-category=category
+    .owl-carousel.col-xs-12.tag_categories
+      - @tag_categories.each do |category|
+        .tag_library id="tag-library-#{category}" data-category=category
 
 

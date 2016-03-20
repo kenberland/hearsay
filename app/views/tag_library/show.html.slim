@@ -1,8 +1,10 @@
 div id="tag-management"
-  h1 = @tag_category.to_s
+  h1
+    .fa class=font_awesomeify(@tag_category) class="#{@tag_category}_foreground"
+    = " #{@tag_category.to_s.capitalize}"
   ul
     - @tags.each do |tag|
-      li.tag-cloud id="tag-cloud-li-#{tag.id}"
+      li.tag-cloud class=@tag_category id="tag-cloud-li-#{tag.id}"
         span.label.label-fatter
           = tag.tag
 

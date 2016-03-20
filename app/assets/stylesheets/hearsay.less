@@ -1,9 +1,10 @@
 @import 'colours';
 .border-radius(@radius: 5px) {
   -webkit-border-radius: @radius;
-     -moz-border-radius: @radius;
-          border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
 }
+
 h1 {
   font-size: 1.25em;
   color: #555555;
@@ -30,31 +31,65 @@ h1 {
   color: #4C4C4C;
 }
 .label > a:hover {
-    background-color: red;
+  background-color: red;
 }
 
 .school {
-    background-color: @school;
+  background-color: @school;
 }
 
 .finance {
-    background-color: @finance;
+  background-color: @finance;
 }
 
 .roommates {
-    background-color: @roommates;
+  background-color: @roommates;
 }
 
 .work {
-    background-color: @work;
+  background-color: @work;
 }
 
 .relationships {
-    background-color: @relationships;
+  background-color: @relationships;
 }
 
 .sports {
-    background-color: @sports;
+  background-color: @sports;
+}
+
+.school_foreground {
+  color: @school;
+}
+
+.finance_foreground {
+  color: @finance;
+}
+
+.roommates_foreground {
+  color: @roommates;
+}
+
+.work_foreground {
+  color: @work;
+}
+
+.relationships_foreground {
+  color: @relationships;
+}
+
+.sports_foreground {
+  color: @sports;
+}
+
+.tag_categories {
+  background-color: @tag_background;
+  .owl-wrapper-outer {
+    height: inherit;
+    .owl-wrapper {
+      height: inherit;
+    }
+  }
 }
 
 .portrait {
@@ -99,3 +134,4 @@ html, body {
   border:0 solid #eee;
   vertical-align: middle;
 }
+
