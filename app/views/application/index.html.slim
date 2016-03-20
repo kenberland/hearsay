@@ -1,7 +1,9 @@
 .center-container
   .center-row
-    .col-xs-12.text-center
-      .user-profile id="user-profile-1"
+    .col-xs-12
+      .owl-carousel
+        = 5.times do |idx|
+          .user-profile id="user-profile-#{idx}"
   .center-row
     .col-xs-12.text-center
       .tag_library id="tag-library-finance" data-category="finance"
