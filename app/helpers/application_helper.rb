@@ -21,4 +21,8 @@ module ApplicationHelper
       'fa-question-circle'
     end
   end
+
+  def tag_count(tag, tag_count_hash, connection_uid)
+    tag_count_hash[[connection_uid.to_i, tag]]
+  end
 end
