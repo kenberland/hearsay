@@ -43,9 +43,7 @@ function addNewTagToCurrentConnection(tagId) {
     data: { tag: { id: tagId } }
   })
     .done(function(response) {
-      $newTag = $('<li class="tag-cloud">' + response.new_tag.tag + '</li>'); // have to embed a tag template in the dom
-      $("#tags-for-" + response.connection_uid).append($newTag);
-      console.dir(response.new_tag);
+      $('#tags-for-' + $connection).replaceWith(response);
     });
 }
 

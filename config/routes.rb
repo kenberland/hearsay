@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   resources :users, only: [:show] do
     resources :tags, only: [:create, :destroy]
   end
-  resources :connections, only: [:show]
+  resources :connections, only: [:show] do
+    get '/tag_cloud' => 'connections#tag_cloud'
+  end
   resources :tag_library, only: [:show], param: :category
 end

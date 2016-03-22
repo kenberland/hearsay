@@ -5,5 +5,6 @@
     h1
       = @connection.name
 .row
-  .col-xs-12
-    = render 'tags'
+  .col-xs-12.tag-cloud-container
+    div.tags id="tag-management"
+      = render 'tag_cloud'
