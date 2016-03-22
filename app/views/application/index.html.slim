@@ -1,7 +1,9 @@
 .center-container
+  div#active-user
   .owl-carousel
     - 5.times do |idx|
       .user-profile id="user-profile-#{idx}"
+
   .center-row
     .owl-carousel.tag_categories
       - @tag_categories.each do |category|

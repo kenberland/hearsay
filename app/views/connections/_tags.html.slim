@@ -1,6 +1,4 @@
 div.tags id="tag-management"
-  - if params[:id].to_i == 0
-    .active-user data-active_user="#{@connection.uid}"
   ul id="tags-for-#{@connection.uid}"
     - @tag_counts.each do |tag_info, tag_count|
       - tag = current_tag(@tags, tag_info)
