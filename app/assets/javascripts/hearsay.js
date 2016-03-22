@@ -10,8 +10,8 @@ $(function() {
     $(this).load("/tag_library/" + this.dataset.category )
   })
   $(".owl-carousel").owlCarousel({
-    singleItem: true,
-    lazyLoad: true,
-    pagination: false
+    items: 1,
+    dots: false
   });
+  $('body').bind('touchmove', function(e){e.preventDefault()})
 });
