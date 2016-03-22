@@ -22,7 +22,11 @@ module ApplicationHelper
     end
   end
 
-  def tag_count(tag, tag_count_hash, connection_uid)
-    tag_count_hash[[connection_uid.to_i, tag]]
+  def tag_category(all_tag_categories, tag)
+    all_tag_categories[tag.tag_category_id]
+  end
+
+  def current_tag(user_tags, current_tag_info)
+    user_tags.select{|tag| tag.id == current_tag_info.last}.first
   end
 end

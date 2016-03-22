@@ -1,6 +1,6 @@
 div id="tag-management"
   h1
-    .fa class=font_awesomeify(@tag_category) class="#{@tag_category}_foreground"
+    .fa class=font_awesomeify(@tag_category)
     = " #{@tag_category.to_s.capitalize}"
   ul
     - @tags.each do |tag|
