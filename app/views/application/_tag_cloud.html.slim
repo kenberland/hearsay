@@ -10,4 +10,4 @@ ul id="tags-for-#{@connection.uid}"
             span.neutral
               = " #{tag_count}"
           - if @my_tags.include?(tag.id)
-            a.fa.fa-times data-destroy="tag-cloud-li-#{tag.id}" data-remote="true" href="#{user_tag_path(@connection.uid, tag.id)}" rel="nofollow data-method="delete"
+            a.fa.fa-times href="javascript:deleteNewTagToCurrentConnection(#{tag.id});" rel="nofollow" data-method="delete"

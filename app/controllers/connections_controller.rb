@@ -15,7 +15,7 @@ class ConnectionsController < ApplicationController
     @connection = @connections.find_by_uid(params[:id])
     @tags = get_tags(@connection.uid)
     @tag_counts = count(@connection.uid)
-    @my_tags =[]
+    @my_tags = get_my_tags(@connection.uid)
     @tag_categories = TagCategory.all.pluck(:id, :category).to_h
     render :_tag_cloud, layout: false
   end

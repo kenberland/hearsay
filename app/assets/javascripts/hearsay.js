@@ -1,9 +1,4 @@
 $(function() {
-  $('#tag-management').
-    on('ajax:success',function(evt, data, status, xhr){
-      $("#"+evt.target.dataset.destroy).remove();
-    });
-
   $(".user-profile").each(function(i) {
     $(this).load("/connections/" + i, function(response, status, xhr){
       if ( !$('#active-user').data('active_user') ) {
@@ -47,3 +42,14 @@ function addNewTagToCurrentConnection(tagId) {
     });
 }
 
+function deleteNewTagToCurrentConnection(tagId) {
+  var $connection = $('#active-user').data('active_user');
+  $.ajax({
+    method: "DELETE",
+    url: "/users/" + $connection + "/tags/" + tagId,
+    data: { tag: { id: tagId } }
+  })
+    .done(function(response) {
+      $('#tags-for-' + $connection).replaceWith(response);
+    });
+}

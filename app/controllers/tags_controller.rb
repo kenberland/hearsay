@@ -11,7 +11,7 @@ class TagsController < ApplicationController
 
   def destroy
     UserTag.find_by(tag_id: params[:id], from_user_uid: current_user.uid, to_user_uid: params[:user_id]).destroy rescue nil
-    render json: {}
+    redirect_to connection_tag_cloud_path(params[:user_id]), status: 303
   end
 
   private
