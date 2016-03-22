@@ -5,7 +5,7 @@ class ConnectionsController < ApplicationController
     @connection = @connections[params[:id].to_i]
     @tags = get_tags(@connection.uid)
     @tag_counts = count(@connection.uid)
-    @my_tags =[]#nil#get_my_tags(@user)
+    @my_tags = get_my_tags(@connection.uid)
     @tag_categories = TagCategory.all.pluck(:id, :category).to_h
     render layout: false
   end
@@ -14,8 +14,8 @@ class ConnectionsController < ApplicationController
     User.find_by_uid(uid).tags.uniq rescue []
   end
 
-  def get_my_tags user
-    User.find_by_uid(user.uid).user_tags.from_user(current_user.uid).map(&:tag_id)
+  def get_my_tags connection_uid
+    User.find_by_uid(connection_uid).user_tags.from_user(current_user.uid).map(&:tag_id)
   end
 
   def count(user_id)
