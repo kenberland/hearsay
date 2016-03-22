@@ -15,3 +15,18 @@ $(function() {
   });
   $('body').bind('touchmove', function(e){e.preventDefault()})
 });
+
+function addNewTagToCurrentConnection(tagId) {
+  var $connection = $('.active-user').data().active_user
+  $.ajax({
+    method: "POST",
+    url: "/users/" + $connection + "/tags",
+    data: { tag: { id: tagId } }
+  })
+    .done(function(response) {
+      $newTag = $('<li class="tag-cloud">' + response.new_tag.tag + '</li>'); // have to embed a tag template in the dom
+      $("#tags-for-" + response.connection_uid).append($newTag);
+      console.dir(response.new_tag);
+    });
+}
+

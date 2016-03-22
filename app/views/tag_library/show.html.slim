@@ -4,7 +4,8 @@ div id="tag-management"
     = " #{@tag_category.to_s.capitalize}"
   ul
     - @tags.each do |tag|
-      li.tag-cloud class=@tag_category id="tag-cloud-li-#{tag.id}"
-        span.label.label-fatter
-          = tag.tag
+      a href="javascript:addNewTagToCurrentConnection(#{tag.id});" rel="nofollow"
+        li.tag-cloud class=@tag_category id="tag-cloud-li-#{tag.id}"
+          span.label.label-fatter
+            = tag.tag
 

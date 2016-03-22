@@ -1,9 +1,11 @@
 div.tags id="tag-management"
-  ul
+<<<<<<< HEAD
+  - if params[:id].to_i == 0
+    .active-user data-active_user="#{@connection.uid}"
+  ul id="tags-for-#{@connection.uid}"
     - @tag_counts.each do |tag_info, tag_count|
       - tag = current_tag(@tags, tag_info)
       - tag_category_name = tag_category(@tag_categories, tag)
-
       li.tag-cloud id="tag-cloud-li-#{tag.id}"
         span class=(@my_tags.include?(tag.id) ? 'user-owned-tag' : '')
           span.label.label-fatter
