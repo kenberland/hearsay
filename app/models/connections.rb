@@ -1,11 +1,19 @@
 class Connections
-  attr_accessor :connections
+  attr_accessor :connections, :map
 
   def initialize args
     @connections = Array.new
+    @map = Hash.new
+    index = 0
     args.each do |c|
       @connections.push Connection.new c
+      @map[@connections.last.uid] = index
+      index = index + 1
     end
+  end
+
+  def find_by_uid uid
+    connections[map[uid]]
   end
 
   def count
