@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
                               secret:     auth_hash.credentials.secret,
                             })
     self.current_user = @user
-    redirect_to '/'
+    redirect_to connections_path
   end
 
   protected

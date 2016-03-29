@@ -2,9 +2,9 @@ doctype html
 html lang='en'
   head
     = render 'head'
-  body
-    div id="wrap"
-      = render 'nav'
-      = bootstrap_flash
-      = yield
-    = render 'footer'
+    body data-no-turbolink="true"
+      div id="wrap"
+        = render 'nav'
+        = bootstrap_flash
+        = yield
+      = render 'footer'

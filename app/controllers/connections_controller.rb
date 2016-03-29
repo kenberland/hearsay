@@ -1,5 +1,7 @@
 class ConnectionsController < ApplicationController
-  protect_from_forgery with: :exception
+  before_action :confirm_logged_in, except: [:status, :login]
+  before_action :get_connections, except: [:status, :login]
+  before_action :get_tag_categories, except: [:status, :login]
 
   def show
     @connection = @connections[params[:id].to_i]
@@ -21,6 +23,10 @@ class ConnectionsController < ApplicationController
   end
 
   private
+
+  def confirm_logged_in
+    redirect_to root_path unless current_user
+  end
 
   def get_tags uid
     User.find_by_uid(uid).tags.uniq rescue []
