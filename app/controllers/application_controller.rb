@@ -1,16 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  def api
-    @api ||= Koala::Facebook::API.new(current_user.token)
-  end
-
-  def get_connections
-    @connections = Connections.new current_user
-  end
-
-  def get_tag_categories
-    @tag_categories = TagCategory.all.map &:category
+  def confirm_logged_in
+    redirect_to root_path unless current_user
   end
 
   def current_user= user
