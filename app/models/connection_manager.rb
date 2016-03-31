@@ -22,7 +22,7 @@ class ConnectionManager
   def get_segment s
     key = "connection_map/#{user.uid}/#{s}"
     Rails.cache.fetch(key, expires_in: EXPIRY_TIME) do
-      api.get_connections('me', 'friends?fields=id,name,picture.type(large),first_name,last_name', { :offset => s, :limit => 5 })
+      api.get_connections('me', 'friends?fields=id,name,picture.type(large),first_name,last_name', { :offset => s * SEGMENT_SIZE, :limit => 5 })
     end
   end
 
