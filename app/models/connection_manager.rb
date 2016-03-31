@@ -9,10 +9,14 @@ class ConnectionManager
     @api = Koala::Facebook::API.new user.token
   end
 
-  def retrieve_user connection
+  def retrieve_connection connection
     segment = get_segment(connection.index/SEGMENT_SIZE)
     cache_connections_in_segment(segment)
-    populate_connection(connection, Hashie::Mash.new(segment[connection.index % SEGMENT_SIZE]))
+    if segment_connection = segment[connection.index % SEGMENT_SIZE]
+      populate_connection(connection, Hashie::Mash.new(segment_connection))
+    else
+      connection.error = :out_of_range
+    end
   end
 
   def get_segment s

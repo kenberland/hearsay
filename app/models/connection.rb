@@ -1,11 +1,11 @@
 class Connection
-  attr_accessor :manager, :index, :uid, :name, :first_name, :last_name, :url
+  attr_accessor :manager, :error, :index, :uid, :name, :first_name, :last_name, :url
 
   def initialize index, user
     @manager = ConnectionManager.new user
     @index = index.to_i
-    @manager.retrieve_user(self)
-    create_user_from_self
+    @manager.retrieve_connection(self)
+    create_user_from_self unless self.error
   end
 
   def create_user_from_self
