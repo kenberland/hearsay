@@ -1,13 +1,10 @@
-.center-container
+.pad-for-nav
   div#active-user
-  .owl-carousel
-    - 5.times do |idx|
-      .user-profile id="user-profile-#{idx}"
-
-  .center-row
-    .owl-carousel.tag_categories
-      - @tag_categories.each do |category|
-        .tag_library id="tag-library-#{category}" data-category=category
-      .tag_library id="tag-library-new-tag-form" data-category="new-tag-form"
-
-
+    .owl-carousel
+      - 5.times do |idx|
+        .user-profile id="user-profile-#{idx}"
+  div#tag-categories
+    .owl-carousel
+        - @tag_categories.each do |category|
+          .tag_library id="tag-library-#{category}" data-category=category
+        .tag_library id="tag-library-new-tag-form" data-category="new-tag-form"
