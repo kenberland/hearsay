@@ -7,19 +7,19 @@ class ConnectionsController < ApplicationController
 
   def show
     @connection = Connection.new(params[:id], current_user)
-    @tags = []
-    @my_tags = []
-    @tag_counts = []
+    @tags = get_tags(@connection.uid)
+    @my_tags = get_my_tags(@connection.uid)
+    @tag_counts = count(@connection.uid)
     @tag_categories = TagCategory.all.pluck(:id, :category).to_h
     render layout: false
   end
 
   def tag_cloud
     params[:id] = params[:connection_id]
-    @connection = [] #@connections.find_by_uid(params[:id])
-    @tags = [] #get_tags(@connection.uid)
-    @tag_counts = {} #count(@connection.uid)
-    @my_tags = [] #get_my_tags(@connection.uid)
+    debugger;1
+    @connection = @connections.find_by_uid(params[:id])
+    @tags = get_tags(@connection.uid)
+    @tag_counts = count(@connection.uid)
     @tag_categories = TagCategory.all.pluck(:id, :category).to_h
     render :_tag_cloud, layout: false
   end

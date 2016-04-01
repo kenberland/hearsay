@@ -14,7 +14,7 @@ h6 {
   font-size: 70%;
 }
 
-.owl-item {
+.slick-slide {
   padding: 10px;
 }
 
@@ -103,12 +103,6 @@ h6 {
 
 .tag_categories {
   background-color: @tag_background;
-  .owl-stage-outer {
-    height: inherit;
-    .owl-stage {
-      height: inherit;
-    }
-  }
 }
 
 .portrait {
@@ -150,22 +144,29 @@ html, body {
 
 .center-container {
   height:100%;
-  display: table;
   width:100%;
-  margin:0;
 }
 
 .center-row {
   height:50%;
   width:100%;
-  display: table-row;
 }
 
 .center-row > div {
   height:100%;
-  display: table-cell;
   border:0 solid #eee;
   vertical-align: middle;
+}
+
+.carousel {
+  height: 50%;
+}
+
+.carousel > .slick-list {
+  height: inherit;
+  .slick-track {
+    height: inherit;
+  }
 }
 
 .neutral {

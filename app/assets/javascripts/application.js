@@ -15,5 +15,5 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require_tree .
-//= require owl.carousel
+//= require jquery.slick
 //= require facebook_sdk

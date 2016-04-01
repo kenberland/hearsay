@@ -4,6 +4,7 @@ gem 'capistrano'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
+gem "jquery-slick-rails"
 gem 'koala'
 gem 'less-rails'
 gem 'linkedin'
@@ -21,7 +22,6 @@ gem 'turbolinks'
 gem 'twitter-bootstrap-rails'
 gem 'unicorn'
 gem 'uglifier', '>= 1.3.0'
-gem 'owlcarousel-rails', github: 'acrogenesis/owlcarousel-rails', branch: 'OwlCarousel2'
 
 group :development, :test do
   gem 'byebug'
