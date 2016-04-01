@@ -1,30 +1,32 @@
 class ConnectionsController < ApplicationController
   before_action :confirm_logged_in, except: [:status, :login]
+  before_action :load_connection, except: [:index]
 
   def index
     @tag_categories = TagCategory.all.map &:category
   end
 
   def show
-    @connection = Connection.new(params[:id], current_user)
     @tags = get_tags(@connection.uid)
-    @my_tags = get_my_tags(@connection.uid)
     @tag_counts = count(@connection.uid)
+    @my_tags = get_my_tags(@connection.uid)
     @tag_categories = TagCategory.all.pluck(:id, :category).to_h
     render layout: false
   end
 
   def tag_cloud
-    params[:id] = params[:connection_id]
-    debugger;1
-    @connection = @connections.find_by_uid(params[:id])
     @tags = get_tags(@connection.uid)
     @tag_counts = count(@connection.uid)
+    @my_tags = get_my_tags(@connection.uid)
     @tag_categories = TagCategory.all.pluck(:id, :category).to_h
     render :_tag_cloud, layout: false
   end
 
   private
+
+  def load_connection
+    @connection = Connection.new(params[:id], current_user)
+  end
 
   def get_tags uid
     User.find_by_uid(uid).tags.uniq rescue []
