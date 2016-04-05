@@ -26,6 +26,9 @@ class ConnectionsController < ApplicationController
 
   def load_connection
     @connection = Connection.new(params[:id], current_user)
+    if @connection.error == :out_of_range
+      return render nothing: true, status: 404
+    end
   end
 
   def get_tags uid
