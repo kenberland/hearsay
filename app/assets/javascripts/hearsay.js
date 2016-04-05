@@ -14,8 +14,7 @@ $(function() {
 
   $('.users-carousel').slick({
     arrows: false,
-    mobileFirst: true,
-    initialSlide: 2
+    mobileFirst: true
   });
 
   $('.tag-carousel').slick({
@@ -26,44 +25,61 @@ $(function() {
   $('body').bind('touchmove', function(e){e.preventDefault();});
 
   setTimeout(function(){
-    $('.users-carousel').slick('refresh');
   }, 500);
 
   $('.users-carousel').on('beforeChange', function(event, slick, currentSlide, nextSlide){
-    wentLeft = false;
-    edge = false;
-
-    if ( currentSlide - nextSlide < 0 || currentSlide - nextSlide == 4 ) { wentLeft = true; }
-    if ( nextSlide - 1 == 0 && !wentLeft ) { edge = 'right'; }
-    if ( nextSlide + 1 == 4 && wentLeft ) { edge = 'left'; }
-
-    console.log(edge);
-    getConnectionId(nextSlide, wentLeft, edge);
+    getConnectionId(nextSlide, didGoLeft(currentSlide, nextSlide));
   });
 });
 
-function getConnectionId(slideNum, wentLeft, edge) {
-  // Not gonna stay as slideNum.  Gotta figure out the connection# and then do the math still
-  wentLeft ? slideNum += 2 : slideNum -= 2;
+function getConnectionId(slideNum, wentLeft) {
+  connectionNum = getConnectionNum(slideNum, wentLeft);
   $.ajax({
     method: 'GET',
-    url: '/connections/' + slideNum
+    url: '/connections/' + connectionNum
   }).success(function(response) {
-    updateContainer(response, wentLeft, slideNum, edge);
+    updateContainer(response, connectionNum, slideNum, wentLeft);
   });
 }
 
-function updateContainer(response, wentLeft, slideNum, edge) {
-  left = wentLeft;
-  right = !wentLeft;
+function getConnectionNum(slideNum, wentLeft) {
+  connectionNum = $(".user-profile[data-slick-index='" + slideNum + "'] > .connection-index ").data('connection-index');
+  wentLeft ? connectionNum -= 1 : connectionNum += 1;
+  return connectionNum;
+}
 
-  if ( right ) { slideNum -= 1; }
-  if ( left ) { slideNum += 1; }
+function updateContainer(response, connectionNum, slideNum, wentLeft) {
+  leftEdge = (slideNum == 0 && wentLeft) ? true : false;
+  rightEdge = (slideNum == 4 && !wentLeft) ? true : false;
 
-  if ( edge == 'left' ) { updateLTREdgeContainer(response); }
-  if ( edge == 'right' ) { updateRTLEdgeContainer(response); }
+  if ( rightEdge ) { updateRightSide(response); }
+  if ( leftEdge ) { updateLeftSide(response); }
 
-//  $(".user-profile[data-slick-index='" + slideNum + "']").html(response);
+  wentLeft ? slideNum -= 1 : slideNum += 1;
+  updateProfile(response, slideNum);
+}
+
+function updateLeftSide(response) {
+  updateProfile(response, 4);
+}
+
+function updateRightSide(response) {
+  updateProfile(response, 0);
+}
+
+function updateProfile(response, index) {
+  $(".user-profile[data-slick-index='" + index + "']").html(response);
+}
+
+function didGoLeft(currentSlide, nextSlide) {
+  wentLeft = (currentSlide - nextSlide > 0) ? true : false;
+
+  if (currentSlide - nextSlide == -4) {
+    wentLeft = true;
+  } else if (currentSlide - nextSlide == 4) {
+    wentLeft = false;
+  }
+  return wentLeft;
 }
 
 function addNewTagToCurrentConnection(tagId) {

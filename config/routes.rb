@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   end
 
   resources :connections, only: [:index, :show] do
-    get '/tag_cloud' => 'connections#tag_cloud'
+    member do
+      get '/tag_cloud' => 'connections#tag_cloud'
+    end
   end
   resources :tag_library, only: [:show], param: :category
 end
