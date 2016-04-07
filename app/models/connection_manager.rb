@@ -2,7 +2,7 @@ EXPIRY_TIME = 10.minutes
 SEGMENT_SIZE = 5
 
 class ConnectionManager
-  attr_accessor :api, :user, :segment
+  attr_accessor :api, :user, :segment, :index
 
   def initialize user
     @user = user
@@ -10,6 +10,7 @@ class ConnectionManager
   end
 
   def retrieve_connection connection
+    @index = connection.index
     @segment = get_segment(connection.index/SEGMENT_SIZE)
     cache_connections_in_segment(segment)
     if segment_connection = segment[connection.index % SEGMENT_SIZE]
