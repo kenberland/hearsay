@@ -27,7 +27,9 @@ $(function() {
   $('body').bind('touchmove', function(e){e.preventDefault();});
 
   $('.users-carousel').on('beforeChange', function(event, slick, currentSlide, nextSlide){
-    updateNextSlide(nextSlide, didGoLeft(currentSlide, nextSlide), slick);
+    if (currentSlide != nextSlide) {
+      updateNextSlide(nextSlide, didGoLeft(currentSlide, nextSlide), slick);
+    }
   });
 
   $('.users-carousel').on('afterChange', function(event, slick, currentSlide){
