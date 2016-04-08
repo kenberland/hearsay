@@ -1,12 +1,23 @@
+//= require spin.min
 function updateNextSlide(slideNum, wentLeft, slick) {
   currentConnectionNum = getConnectionNum(slideNum, wentLeft);
-
   $.ajax({
     method: 'GET',
-    url: '/connections/' + currentConnectionNum
+    url: '/connections/' + currentConnectionNum,
+    beforeSend: setupSpinner(slideNum, wentLeft)
   }).success(function(response) {
     updateContainer(response, currentConnectionNum, slideNum, wentLeft, slick);
   });
+}
+
+function setupSpinner(slideNum, wentLeft) {
+  currentSlideNum = slideNum;
+  wentLeft ? currentSlideNum -= 2 : currentSlideNum += 2;
+
+  $target = $(".user-profile[data-slick-index='" + currentSlideNum + "']");
+
+  var spinner = new Spinner().spin();
+//  $target.append(spinner.el);
 }
 
 function filterSlides(slideNum, slick) {
@@ -62,6 +73,10 @@ function updateRightSide(response, slick) {
 
 function updateProfile(response, index) {
   $(".user-profile[data-slick-index='" + index + "']").html(response);
+  active_id = $('.users-carousel > .slick-list > .slick-track > .slick-active > .connection').attr('id');
+  active_index = $('.users-carousel > .slick-list > .slick-track > .slick-active > .connection-index').data('connection-index');
+  $('#active-user').data('active-user', active_id);
+  $('#active-user').data('active-index', active_index);
 }
 
 function didGoLeft(currentSlide, nextSlide) {

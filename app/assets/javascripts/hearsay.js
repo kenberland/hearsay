@@ -4,7 +4,7 @@ $(function() {
     $(this).load('/connections/' + i, function(response, status, xhr){
       if ( !$('#active-user').data('active_user') ) {
         active_id = $(response).attr('id');
-        $('#active-user').data('active_user', active_id);
+        $('#active-user').data('active-user', active_id);
       }
     });
   });
@@ -35,29 +35,28 @@ $(function() {
   $('.users-carousel').on('afterChange', function(event, slick, currentSlide){
     updateSlideOptions(slick, currentSlide);
   });
-
 });
 
 function addNewTagToCurrentConnection(tagId) {
-  var $connection = $('#active-user').data('active_user');
+  var connection = $('#active-user').data('active-user');
+  var connectionIndex = $('#active-user').data('active-index');
   $.ajax({
     method: "POST",
-    url: "/users/" + $connection + "/tags",
-    data: { tag: { id: tagId } }
-  })
-    .done(function(response) {
-      $('#tags-for-' + $connection).replaceWith(response);
-    });
+    url: "/users/" + connection + "/tags",
+    data: { tag: { id: tagId }, users: { index: connectionIndex } } 
+  }).done(function(response) {
+    $('#tags-for-' + connection).replaceWith(response);
+  });
 }
 
 function deleteNewTagToCurrentConnection(tagId) {
-  var $connection = $('#active-user').data('active_user');
+  var connection = $('#active-user').data('active-user');
+  var connectionIndex = $('#active-user').data('active-index');
   $.ajax({
     method: "DELETE",
-    url: "/users/" + $connection + "/tags/" + tagId,
-    data: { tag: { id: tagId } }
-  })
-  .done(function(response) {
-    $('#tags-for-' + $connection).replaceWith(response);
+    url: "/users/" + connection + "/tags/" + tagId,
+    data: { tag: { id: tagId }, users: { index: connectionIndex } }
+  }).done(function(response) {
+    $('#tags-for-' + connection).replaceWith(response);
   });
 }

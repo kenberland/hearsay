@@ -6,12 +6,12 @@ class TagsController < ApplicationController
     new_tag = Tag.find params[:tag][:id]
     new_user_tag = User.find_by(uid: params[:user_id]).user_tags.build tag_id: new_tag.id, from_user_uid: current_user.uid
     new_user_tag.save rescue PG::UniqueViolation
-    redirect_to connection_tag_cloud_path(params[:user_id])
+    redirect_to tag_cloud_connection_path(params[:users][:index]), status: 303
   end
 
   def destroy
     UserTag.find_by(tag_id: params[:id], from_user_uid: current_user.uid, to_user_uid: params[:user_id]).destroy rescue nil
-    redirect_to connection_tag_cloud_path(params[:user_id]), status: 303
+    redirect_to tag_cloud_connection_path(params[:users][:index]), status: 303
   end
 
   private
