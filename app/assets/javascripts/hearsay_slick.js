@@ -1,26 +1,15 @@
-//= require spin.min
 function updateNextSlide(slideNum, wentLeft, slick) {
   currentConnectionNum = getConnectionNum(slideNum, wentLeft);
   $.ajax({
     method: 'GET',
-    url: '/connections/' + currentConnectionNum,
-    beforeSend: setupSpinner(slideNum, wentLeft)
+    url: '/connections/' + currentConnectionNum
   }).success(function(response) {
     updateContainer(response, currentConnectionNum, slideNum, wentLeft, slick);
   });
 }
 
-function setupSpinner(slideNum, wentLeft) {
-  currentSlideNum = slideNum;
-  wentLeft ? currentSlideNum -= 2 : currentSlideNum += 2;
-
-  $target = $(".user-profile[data-slick-index='" + currentSlideNum + "']");
-
-  var spinner = new Spinner().spin();
-//  $target.append(spinner.el);
-}
-
 function filterSlides(slideNum, slick) {
+  $('.user-profile').removeClass('filter');
   for(i = 0; i <= slideNum; i++){
     $('#user-profile-' + i).addClass('filter');
   }
