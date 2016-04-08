@@ -2,9 +2,11 @@
 $(function() {
   $('.user-profile').each(function(i) {
     $(this).load('/connections/' + i, function(response, status, xhr){
-      if ( !$('#active-user').data('active_user') ) {
-        active_id = $(response).attr('id');
+      if ( !$('#active-user').data('active-user') ) {
+        var active_id = $(response).siblings('.connection').attr('id');
+        var active_index = $(response).siblings('.connection-index').data('connection-index');
         $('#active-user').data('active-user', active_id);
+        $('#active-user').data('active-index', active_index);
       }
     });
   });
@@ -43,7 +45,7 @@ function addNewTagToCurrentConnection(tagId) {
   $.ajax({
     method: "POST",
     url: "/users/" + connection + "/tags",
-    data: { tag: { id: tagId }, users: { index: connectionIndex } } 
+    data: { tag: { id: tagId }, users: { index: connectionIndex } }
   }).done(function(response) {
     $('#tags-for-' + connection).replaceWith(response);
   });
