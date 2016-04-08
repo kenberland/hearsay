@@ -2,6 +2,8 @@ class ConnectionsController < ApplicationController
   before_action :confirm_logged_in, except: [:status, :login]
   before_action :load_connection, except: [:index]
 
+  layout 'connections'
+
   def index
     @tag_categories = TagCategory.all.map &:category
   end

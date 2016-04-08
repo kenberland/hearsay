@@ -1,0 +1,12 @@
+doctype html
+html.no-scroll lang='en'
+  head
+    = render 'head'
+    = javascript_include_tag :connections
+    body.no-scroll data-no-turbolink="true"
+      div id="wrap"
+        = render 'nav'
+        = bootstrap_flash
+        = yield
+      .footer
+        = render 'footer'

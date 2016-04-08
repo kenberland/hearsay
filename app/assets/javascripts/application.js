@@ -14,6 +14,4 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require turbolinks
-//= require hearsay
-//= require jquery.slick
 //= require facebook_sdk
