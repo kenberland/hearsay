@@ -39,6 +39,18 @@ $(function() {
   });
 });
 
+function addNewTag() {
+  var category = $('.slick-current.tag_library').data('category');
+  var tag = $('.new-tag').val();
+  $.ajax({
+    method: "POST",
+    url: "/tag_library/" + category + "/create",
+    data: { tag: tag }
+  }).done(function(response) {
+    $('#tag-library-' + category).find('div#tag-management').replaceWith(response);
+  });
+}
+
 function addNewTagToCurrentConnection(tagId) {
   var connection = $('#active-user').data('active-user');
   var connectionIndex = $('#active-user').data('active-index');

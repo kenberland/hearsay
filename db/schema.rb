@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160320001944) do
+ActiveRecord::Schema.define(version: 20160410035425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20160320001944) do
   end
 
   add_index "tags", ["is_library_tag"], name: "index_is_library_tag_on_tags", using: :btree
-  add_index "tags", ["tag"], name: "index_tags_on_tag", unique: true, using: :btree
+  add_index "tags", ["tag", "tag_category_id"], name: "index_tags_on_tag_and_tag_category_id", unique: true, using: :btree
   add_index "tags", ["tag_category_id"], name: "index_tags_on_tag_category_id", using: :btree
 
   create_table "user_tags", force: :cascade do |t|

@@ -14,5 +14,8 @@ Rails.application.routes.draw do
       get '/tag_cloud' => 'connections#tag_cloud'
     end
   end
-  resources :tag_library, only: [:show], param: :category
+  resources :tag_library, only: [:show], param: :category do
+    resources :create, only: [:create], controller: :tag_library
+  end
+
 end
