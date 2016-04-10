@@ -7,3 +7,20 @@
   .tag-carousel.tag_categories.carousel
     - @tag_categories.each do |category|
       .tag_library id="tag-library-#{category}" data-category=category
+
+.modal.fade id="addTagModal" tabindex="-1" role="dialog" aria-labelledby="addTagModalLabel"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        button.close type="button" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true"
+            | &times
+        h4.modal-title id="addTagModalLabel"
+          | Add Tag
+      .modal-body
+        input
+      .modal-footer
+        button.btn.btn-default type="button"  data-dismiss="modal"
+          | Cancel
+        button.btn.btn-primary type="button" data-dismiss="modal"
+          | Add Tag
