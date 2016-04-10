@@ -37,6 +37,10 @@ $(function() {
   $('.users-carousel').on('afterChange', function(event, slick, currentSlide){
     updateSlideOptions(slick, currentSlide);
   });
+
+  $('.modal').on('shown.bs.modal', function () {
+    $(this).find('input:text:visible:first').focus();
+  })
 });
 
 function addNewTag() {
@@ -47,6 +51,7 @@ function addNewTag() {
     url: "/tag_library/" + category + "/create",
     data: { tag: tag }
   }).done(function(response) {
+    $('.new-tag').val('');
     $('#tag-library-' + category).find('div#tag-management').replaceWith(response);
   });
 }
