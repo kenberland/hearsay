@@ -5,7 +5,11 @@ class TagsController < ApplicationController
   def create
     new_tag = Tag.find params[:tag][:id]
     new_user_tag = User.find_by(uid: params[:user_id]).user_tags.build tag_id: new_tag.id, from_user_uid: current_user.uid
-    new_user_tag.save rescue PG::UniqueViolation
+    begin
+      new_user_tag.save
+    rescue PG::UniqueViolation => e
+      Rails.logger.error e
+    end
     redirect_to tag_cloud_connection_path(params[:users][:index]), status: 303
   end
 

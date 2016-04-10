@@ -4,7 +4,7 @@
     = render 'portrait'
   .col-xs-6
     h1
-      = @connection.name
+      = "#{@connection.name} #{@connection.uid}"
 .row
   .col-xs-12.tag-cloud-container
     div.tags id="tag-management"
