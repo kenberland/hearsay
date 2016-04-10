@@ -18,4 +18,5 @@ Rails.application.routes.draw do
     resources :create, only: [:create], controller: :tag_library
   end
 
+  resources :browse, only: [:index]
 end
