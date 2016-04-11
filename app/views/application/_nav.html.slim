@@ -15,7 +15,7 @@
         - if current_user
           li
             a href ="#"
-              | Logged in as #{current_user.first_name} (#{current_user.uid})
+              | Logged in as #{current_user.first_name} #{nav_debug_helper}
           li
             a href="#{connections_path}"
               | Connections

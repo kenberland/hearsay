@@ -1,5 +1,5 @@
 class Connection
-  attr_accessor :manager, :error, :index, :uid, :name, :first_name, :last_name, :url
+  attr_accessor :manager, :error, :index, :uid, :name, :first_name, :last_name, :url, :hometown
 
   def initialize index, user
     @manager = ConnectionManager.new user

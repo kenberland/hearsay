@@ -4,7 +4,9 @@
     = render 'portrait'
   .col-xs-6
     h1
-      = "#{@connection.name} #{@connection.uid}"
+      = "#{@connection.name}"
+    h2
+      = "#{@connection.try(:hometown)} #{connection_show_debug_helper}"
 .row
   .col-xs-12.tag-cloud-container
     div.tags id="tag-management"

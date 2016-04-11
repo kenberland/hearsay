@@ -29,4 +29,12 @@ module ApplicationHelper
   def current_tag(user_tags, current_tag_info)
     user_tags.select{|tag| tag.id == current_tag_info.last}.first
   end
+
+  def nav_debug_helper
+    Rails.env.production? ? '' : "(#{@current_user.uid})"
+  end
+
+  def connection_show_debug_helper
+    Rails.env.production? ? '' : "(#{@connection.uid})"
+  end
 end
