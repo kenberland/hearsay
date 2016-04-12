@@ -6,7 +6,7 @@
     h1
       = "#{@connection.name}"
     h2
-      = "#{@connection.try(:hometown)} #{connection_show_debug_helper}"
+      = "#{@connection.try(:location)} #{connection_show_debug_helper}"
 .row
   .col-xs-12.tag-cloud-container
     div.tags id="tag-management"

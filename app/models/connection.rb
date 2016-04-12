@@ -1,5 +1,5 @@
 class Connection
-  attr_accessor :manager, :error, :index, :uid, :name, :first_name, :last_name, :url, :hometown
+  attr_accessor :manager, :error, :index, :uid, :name, :first_name, :last_name, :url, :location
 
   def initialize index, user
     @manager = ConnectionManager.new user
@@ -14,7 +14,7 @@ class Connection
       image: url,
       first_name: first_name,
       last_name: last_name,
-      hometown: hometown,
+      location: location,
     }) if user.new_record?
   end
 end
