@@ -14,6 +14,7 @@ class Connection
       image: url,
       first_name: first_name,
       last_name: last_name,
+      hometown: hometown,
     }) if user.new_record?
   end
 end

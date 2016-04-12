@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   post '/auth/:provider/callback', to: 'sessions#create'
   get  '/auth/:provider/callback', to: 'sessions#create'
 
-  resources :users, only: [:show] do
+  resources :users, only: [] do
     resources :tags, only: [:create, :destroy]
   end
 
