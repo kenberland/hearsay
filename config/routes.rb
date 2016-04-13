@@ -18,5 +18,6 @@ Rails.application.routes.draw do
     resources :create, only: [:create], controller: :tag_library
   end
 
-  resources :browse, only: [:index]
+  get  '/browse', to: 'connections#browse'
+  get  '/browse/:id', to: 'connections#get_absolute_user'
 end

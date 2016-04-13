@@ -1,6 +1,6 @@
 class ConnectionsController < ApplicationController
-  before_action :confirm_logged_in, except: [:status, :login]
-  before_action :load_connection, except: [:index]
+  before_action :confirm_logged_in, except: [:status, :login, :get_absolute_user]
+  before_action :load_connection, except: [:index, :get_absolute_user]
 
   layout 'connections'
 
@@ -22,6 +22,15 @@ class ConnectionsController < ApplicationController
     @my_tags = get_my_tags(@connection.uid)
     @tag_categories = TagCategory.all.pluck(:id, :category).to_h
     render :_tag_cloud, layout: false
+  end
+
+  def get_absolute_user
+    @connection = User.find params[:id]
+    @tags = get_tags(@connection.uid)
+    @tag_counts = count(@connection.uid)
+    @my_tags = get_my_tags(@connection.uid)
+    @tag_categories = TagCategory.all.pluck(:id, :category).to_h
+    render :show, layout: false
   end
 
   private

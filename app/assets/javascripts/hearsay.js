@@ -11,6 +11,11 @@ $(function() {
     });
   });
 
+  $('.browse-profile').each(function(i) {
+    $(this).load('/browse/' + (i+1), function(response, status, xhr){
+    });
+  });
+
   $('.tag_library').each(function(i) {
     $(this).load('/tag_library/' + this.dataset.category);
   });

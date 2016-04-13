@@ -5,4 +5,16 @@ class User < ActiveRecord::Base
     end
   end
   has_many :tags, through: :user_tags
+
+  def name
+    "#{first_name} #{last_name}"
+  end
+
+  def index
+    id
+  end
+
+  def url
+    image
+  end
 end
