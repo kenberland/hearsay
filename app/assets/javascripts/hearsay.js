@@ -1,14 +1,7 @@
 //= require hearsay_slick
 $(function() {
   $('.user-profile').each(function(i) {
-    $(this).load('/connections/' + i, function(response, status, xhr){
-      if ( !$('#active-user').data('active-user') ) {
-        var active_id = $(response).siblings('.connection').attr('id');
-        var active_index = $(response).siblings('.connection-index').data('connection-index');
-        $('#active-user').data('active-user', active_id);
-        $('#active-user').data('active-index', active_index);
-      }
-    });
+    $(this).load('/connections/' + i);
   });
 
   $('.browse-profile').each(function(i) {
@@ -45,7 +38,7 @@ $(function() {
 
   $('.modal').on('shown.bs.modal', function () {
     $(this).find('input:text:visible:first').focus();
-  })
+  });
 });
 
 function addNewTag() {
@@ -62,25 +55,29 @@ function addNewTag() {
 }
 
 function addNewTagToCurrentConnection(tagId) {
-  var connection = $('#active-user').data('active-user');
-  var connectionIndex = $('#active-user').data('active-index');
+  var connectionId = activeUser().find('.connection').attr('id');
+  var connectionIndex = activeUser().find('.connection-index').data('connection-index');
   $.ajax({
     method: "POST",
-    url: "/users/" + connection + "/tags",
+    url: "/users/" + connectionId + "/tags",
     data: { tag: { id: tagId }, users: { index: connectionIndex } }
   }).done(function(response) {
-    $('#tags-for-' + connection).replaceWith(response);
+    $('#tags-for-' + connectionId).replaceWith(response);
   });
 }
 
 function deleteNewTagToCurrentConnection(tagId) {
-  var connection = $('#active-user').data('active-user');
-  var connectionIndex = $('#active-user').data('active-index');
+  var connectionId = activeUser().find('.connection').attr('id');
+  var connectionIndex = activeUser().find('.connection-index').data('connection-index');
   $.ajax({
     method: "DELETE",
-    url: "/users/" + connection + "/tags/" + tagId,
+    url: "/users/" + connectionId + "/tags/" + tagId,
     data: { tag: { id: tagId }, users: { index: connectionIndex } }
   }).done(function(response) {
-    $('#tags-for-' + connection).replaceWith(response);
+    $('#tags-for-' + connectionId).replaceWith(response);
   });
+}
+
+function activeUser(){
+  return $('.users-carousel').find('.slick-active');
 }
