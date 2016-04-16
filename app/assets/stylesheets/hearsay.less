@@ -4,7 +4,16 @@
   -moz-border-radius: @radius;
   border-radius: @radius;
 }
-
+@media only screen and (max-device-width: 414px) {
+  body {
+    font-size: 14px;
+  }
+}
+@media only screen and (max-device-width: 360px) {
+  body {
+    font-size: 12px;
+  }
+}
 h1 {
   font-size: 1.75em;
   color: #555555;
@@ -133,8 +142,8 @@ h6 {
 }
 
 .portrait {
-  max-width: 15em;
-  max-height: 15em;
+  max-width: 13em;
+  max-height: 13em;
 }
 
 .no-scroll {
@@ -241,4 +250,7 @@ h6 {
 .edit-pencil {
   font-size: 300%;
   float: right;
+}
+.home-info {
+  margin: 1em;
 }

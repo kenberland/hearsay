@@ -1,6 +1,6 @@
 class ConnectionsController < ApplicationController
-  before_action :confirm_logged_in, except: [:status, :login, :get_absolute_user]
-  before_action :load_connection, except: [:index, :get_absolute_user]
+  before_action :confirm_logged_in, except: [:status, :login, :browse, :get_absolute_user]
+  before_action :load_connection, except: [:index, :browse, :get_absolute_user]
 
   layout 'connections'
 
