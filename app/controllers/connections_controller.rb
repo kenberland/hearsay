@@ -28,7 +28,7 @@ class ConnectionsController < ApplicationController
     @connection = User.find params[:id]
     @tags = get_tags(@connection.uid)
     @tag_counts = count(@connection.uid)
-    @my_tags = get_my_tags(@connection.uid)
+    @my_tags = current_user ? get_my_tags(@connection.uid) : []
     @tag_categories = TagCategory.all.pluck(:id, :category).to_h
     render :show, layout: false
   end
