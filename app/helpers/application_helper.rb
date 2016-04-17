@@ -31,7 +31,7 @@ module ApplicationHelper
   end
 
   def nav_debug_helper
-    Rails.env.production? ? '' : "(#{@current_user.uid})"
+    Rails.env.production? ? '' : "(#{@current_user.uid rescue ''})"
   end
 
   def connection_show_debug_helper

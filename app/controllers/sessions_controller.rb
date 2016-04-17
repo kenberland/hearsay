@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
                               secret:     auth_hash.credentials.secret,
                             })
     self.current_user = @user
-    redirect_to connections_path
+    render json: { success: true, location: connections_path }.to_json, :status => 200
   end
 
   protected
