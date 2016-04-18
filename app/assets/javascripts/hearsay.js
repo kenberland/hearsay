@@ -13,7 +13,7 @@ $(function() {
     $(this).load('/tag_library/' + this.dataset.category);
   });
 
-  $('.connection-scroll-container').slick({
+  $('.users-carousel').slick({
     arrows: false,
     mobileFirst: true,
     infinite: false
