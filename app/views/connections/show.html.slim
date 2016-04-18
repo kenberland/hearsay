@@ -1,13 +1,14 @@
-.hidden.connection-index class=@connection.name data-connection-index=@connection.index
-.row.connection id=@connection.uid
-  .col-xs-6
-    = render 'portrait'
-  .col-xs-6
-    h1
-      = "#{@connection.name}"
-    h2
-      = "#{@connection.try(:location)} #{connection_show_debug_helper}"
-.row
-  .col-xs-12.tag-cloud-container
-    div.tags id="tag-management"
-      = render 'tag_cloud'
+.connection-scroll-container
+  .hidden.connection-index class=@connection.name data-connection-index=@connection.index
+  .row.connection id=@connection.uid
+    .col-xs-6
+      = render 'portrait'
+    .col-xs-6
+      h1
+        = "#{@connection.name}"
+      h2
+        = "#{@connection.try(:location)} #{connection_show_debug_helper}"
+  .row
+    .col-xs-12.tag-cloud-container
+      div.tags id="tag-management"
+        = render 'tag_cloud'

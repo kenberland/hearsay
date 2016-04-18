@@ -13,7 +13,7 @@ $(function() {
     $(this).load('/tag_library/' + this.dataset.category);
   });
 
-  $('.users-carousel').slick({
+  $('.connection-scroll-container').slick({
     arrows: false,
     mobileFirst: true,
     infinite: false
@@ -24,15 +24,13 @@ $(function() {
     mobileFirst: true
   });
 
-  $('body').bind('touchmove', function(e){e.preventDefault();});
-
-  $('.users-carousel').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+  $('.connection-scroll-container').on('beforeChange', function(event, slick, currentSlide, nextSlide){
     if (currentSlide != nextSlide) {
       updateNextSlide(nextSlide, didGoLeft(currentSlide, nextSlide), slick);
     }
   });
 
-  $('.users-carousel').on('afterChange', function(event, slick, currentSlide){
+  $('.connection-scroll-container').on('afterChange', function(event, slick, currentSlide){
     updateSlideOptions(slick, currentSlide);
   });
 
@@ -79,5 +77,5 @@ function deleteNewTagToCurrentConnection(tagId) {
 }
 
 function activeUser(){
-  return $('.users-carousel').find('.slick-active');
+  return $('.connection-scroll-container').find('.slick-active');
 }
