@@ -24,13 +24,13 @@ $(function() {
     mobileFirst: true
   });
 
-  $('.connection-scroll-container').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+  $('.users-carousel').on('beforeChange', function(event, slick, currentSlide, nextSlide){
     if (currentSlide != nextSlide) {
       updateNextSlide(nextSlide, didGoLeft(currentSlide, nextSlide), slick);
     }
   });
 
-  $('.connection-scroll-container').on('afterChange', function(event, slick, currentSlide){
+  $('.users-carousel').on('afterChange', function(event, slick, currentSlide){
     updateSlideOptions(slick, currentSlide);
   });
 
