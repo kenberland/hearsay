@@ -36,7 +36,7 @@ function updateSlideOptions(slick, currentSlide) {
 function getConnectionNum(slideNum, wentLeft, centered) {
   if (centered === undefined) { centered = false; }
 
-  var connectionNum = $(".user-profile[data-slick-index='" + slideNum + "'] > .connection-index ").data('connection-index');
+  var connectionNum = $(".user-profile[data-slick-index='" + slideNum + "']").find('.connection-index').data('connection-index');
   if (!centered) { wentLeft ? connectionNum -= 1 : connectionNum += 1; }
   return connectionNum;
 }

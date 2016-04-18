@@ -34,6 +34,10 @@ $(function() {
     updateSlideOptions(slick, currentSlide);
   });
 
+  $('.tag-carousel').on('init', function(event, slick){
+    slick.setOption('infinite', true, true);
+  });
+
   $('.modal').on('shown.bs.modal', function () {
     $(this).find('input:text:visible:first').focus();
   });
