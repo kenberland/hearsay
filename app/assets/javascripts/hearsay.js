@@ -5,12 +5,13 @@ $(function() {
   });
 
   $('.browse-profile').each(function(i) {
-    $(this).load('/browse/' + (i+1), function(response, status, xhr){
-    });
+    $(this).load('/browse/' + (i+1));
   });
 
   $('.tag_library').each(function(i) {
-    $(this).load('/tag_library/' + this.dataset.category);
+    $(this).load('/tag_library/' + this.dataset.category, function(response, status, xhr) {
+      $('.tag-carousel').slick('slickSetOption', 'infinite', true, true);
+    });
   });
 
   $('.users-carousel').slick({
@@ -33,10 +34,6 @@ $(function() {
 
   $('.users-carousel').on('afterChange', function(event, slick, currentSlide){
     updateSlideOptions(slick, currentSlide);
-  });
-
-  $('.tag-carousel').on('init', function(event, slick){
-    slick.setOption('infinite', true, true);
   });
 
   $('.modal').on('shown.bs.modal', function () {
