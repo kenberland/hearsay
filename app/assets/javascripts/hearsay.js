@@ -27,6 +27,7 @@ $(function() {
   $('.users-carousel').on('beforeChange', function(event, slick, currentSlide, nextSlide){
     if (currentSlide != nextSlide) {
       updateNextSlide(nextSlide, didGoLeft(currentSlide, nextSlide), slick);
+      $(this).animate({scrollTop:0}, 200);
     }
   });
 
@@ -81,5 +82,5 @@ function deleteNewTagToCurrentConnection(tagId) {
 }
 
 function activeUser(){
-  return $('.connection-scroll-container').find('.slick-active');
+  return $('.users-carousel').find('.slick-active');
 }
