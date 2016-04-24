@@ -36,9 +36,13 @@ class ConnectionsController < ApplicationController
   private
 
   def load_connection
-    @connection = Connection.new(params[:id], current_user)
-    if @connection.error == :out_of_range
-      return render nothing: true, status: 404
+    index = params[:id].to_i
+    @connection = Connection.new
+    if index == 0
+      @connection.create_from_user!(current_user)
+    else
+      @connection.create_from_index!(index, current_user)
+      return render nothing: true, status: 404 if @connection.error == :out_of_range
     end
   end
 

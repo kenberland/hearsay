@@ -12,10 +12,16 @@ class SessionsController < ApplicationController
                               secret:     auth_hash.credentials.secret,
                             })
     self.current_user = @user
+    big_picture = api.get_object('me', { fields: ['picture.type(large)'] })
+    @user.update_attributes({image: big_picture['picture']['data']['url']})
     render json: { success: true, location: connections_path }.to_json, :status => 200
   end
 
   protected
+
+  def api
+    @api = Koala::Facebook::API.new @user.token
+  end
 
   def split_name name
     name.split(/\s+/)

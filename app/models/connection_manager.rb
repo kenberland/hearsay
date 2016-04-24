@@ -10,7 +10,7 @@ class ConnectionManager
   end
 
   def retrieve_connection connection
-    @index = connection.index
+    @index = connection.index - 1
     @segment = get_segment(connection.index/SEGMENT_SIZE)
     cache_connections_in_segment(segment)
     if segment_connection = segment[connection.index % SEGMENT_SIZE]
