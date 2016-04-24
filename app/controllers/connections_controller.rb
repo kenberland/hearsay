@@ -39,7 +39,7 @@ class ConnectionsController < ApplicationController
     index = params[:id].to_i
     @connection = Connection.new
     if index == 0
-      @connection.create_from_user!(current_user)
+      @connection.create_from_user!(0, current_user)
     else
       @connection.create_from_index!(index, current_user)
       return render nothing: true, status: 404 if @connection.error == :out_of_range

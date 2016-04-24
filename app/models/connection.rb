@@ -9,8 +9,9 @@ class Connection
     self
   end
 
-  def create_from_user! user
+  def create_from_user! index, user
     @uid = user.uid
+    @index = index.to_i
     @name = "#{user.first_name} #{user.last_name}"
     @url = user.image
     @location = user.location
