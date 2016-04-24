@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root to: 'unauthenticated#index'
+  get '/privacy', to: 'unauthenticated#privacy'
+
   get  '/status', to: 'application#status'
 
   post '/auth/:provider/callback', to: 'sessions#create'
