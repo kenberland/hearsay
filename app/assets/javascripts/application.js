@@ -15,3 +15,4 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require facebook_sdk
+//= require jquery.toaster
