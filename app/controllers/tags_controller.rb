@@ -21,10 +21,6 @@ class TagsController < ApplicationController
   private
 
   def prevent_tagging_self
-    toaster_json = {
-      'message' => I18n.t('errors.self-tagging'),
-      'priority' => 'warning'
-    }.to_json
-    return render js: "$.toaster(#{toaster_json});", status: 400 if params[:user_id].to_i == current_user.uid
+    return render js: "toastr.error(\"#{I18n.t('errors.self-tagging')}\");", status: 400 if params[:user_id].to_i == current_user.uid
   end
 end
