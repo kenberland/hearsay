@@ -4,9 +4,10 @@
       ' Hearsay provides the truth about the people you know through simple tags.  It is completely anonymous.  Your friends will not know what you've said.  Oscar Wilde put it best when he said:
       em
         ' Give him a mask, and he will tell you the truth.
-    p.login-button
-      <fb:login-button scope="public_profile,user_relationships,user_location" display="page" size="xlarge" onlogin="checkLoginState();">
-      </fb:login-button>
+    - unless current_user
+      p.login-button
+        <fb:login-button scope="public_profile,user_relationships,user_location" display="page" size="xlarge" onlogin="checkLoginState();">
+        </fb:login-button>
     h5.status
 
     .info style="margin-left: 50%;"
