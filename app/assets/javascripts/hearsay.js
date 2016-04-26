@@ -30,6 +30,7 @@ $(function() {
       updateNextSlide(nextSlide, didGoLeft(currentSlide, nextSlide), slick);
       $(this).animate({scrollTop:0}, 200);
     }
+    toastr.clear();
   });
 
   $('.users-carousel').on('afterChange', function(event, slick, currentSlide){
