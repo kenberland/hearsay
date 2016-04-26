@@ -37,6 +37,7 @@ class ConnectionsController < ApplicationController
 
   def load_connection
     index = params[:id].to_i
+    return render nothing: true, status: 404 if index < 0
     @connection = Connection.new
     if index == 0
       @connection.create_from_user!(0, current_user)

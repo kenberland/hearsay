@@ -20,8 +20,9 @@
 toastr.options = {
   "closeButton": true,
   "newestOnTop": true,
-  "positionClass": "toast-bottom-center",
+  "positionClass": "toast-top-center",
   "hideDuration": "1000",
-  "showMethod": "slideDown",
-  "hideMethod": "slideUp"
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut",
+  "timeOut": "5000",
 }
