@@ -1,4 +1,5 @@
-= render 'toaster_tip'
+- if params[:first_load]
+  = render 'toaster_tip'
 .connection-scroll-container
   .hidden.connection-index class=@connection.name data-connection-index=@connection.index
   .row.connection id=@connection.uid

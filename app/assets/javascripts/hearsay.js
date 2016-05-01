@@ -1,7 +1,7 @@
 //= require hearsay_slick
 $(function() {
   $('.user-profile').each(function(i) {
-    $(this).load('/connections/' + i);
+    $(this).load('/connections/' + i + "?first_load=1");
   });
 
   $('.browse-profile').each(function(i) {
