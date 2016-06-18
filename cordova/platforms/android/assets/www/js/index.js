@@ -49,3 +49,27 @@ var app = {
 };
 
 app.initialize();
+
+function onSuccess(contacts) {
+    alert('Found ' + contacts.length + ' contacts.');
+};
+
+function onError(contactError) {
+    alert('onError!');
+};
+
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+  console.log(navigator.contacts);
+  doContacts();
+}
+
+function doContacts() {
+  var options      = new ContactFindOptions();
+  options.filter   = "Bob";
+  options.multiple = true;
+  options.desiredFields = [navigator.contacts.fieldType.id];
+  options.hasPhoneNumber = true;
+  var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+  navigator.contacts.find(fields, onSuccess, onError, options);
+}
