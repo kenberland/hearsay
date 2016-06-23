@@ -8,8 +8,8 @@
     <feature name="Contacts">
         <param name="android-package" value="org.apache.cordova.contacts.ContactManager" />
     </feature>
-    <feature name="DeviceInformation">
-        <param name="android-package" value="com.vliesaputra.cordova.plugins.DeviceInformation" />
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
     <allow-intent href="market:*" />
     <name>Hearsay</name>

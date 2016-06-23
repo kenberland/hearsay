@@ -64,10 +64,10 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/com.vliesaputra.deviceinformation/www/deviceinformation.js",
-        "id": "com.vliesaputra.deviceinformation.DeviceInformation",
+        "file": "plugins/cordova-plugin-device/www/device.js",
+        "id": "cordova-plugin-device.device",
         "clobbers": [
-            "cordova.plugins.deviceInformation"
+            "device"
         ]
     }
 ];
@@ -76,7 +76,7 @@ module.exports.metadata =
 {
     "cordova-plugin-whitelist": "1.2.2",
     "mp-cordova-plugin-contacts": "1.1.1-dev",
-    "com.vliesaputra.deviceinformation": "1.0.1"
+    "cordova-plugin-device": "1.1.2"
 };
 // BOTTOM OF METADATA
 });

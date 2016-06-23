@@ -17,7 +17,7 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"DeviceInformation\"><param name=\"android-package\" value=\"com.vliesaputra.cordova.plugins.DeviceInformation\" /></feature>",
+                            "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -39,16 +39,7 @@
                             "count": 1
                         }
                     ],
-                    "/manifest": [
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\" />",
-                            "count": 1
-                        }
-                    ]
+                    "/manifest": []
                 }
             }
         }
@@ -60,8 +51,8 @@
         "mp-cordova-plugin-contacts": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
         },
-        "com.vliesaputra.deviceinformation": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.hearsay"
         }
     },
     "dependent_plugins": {},
@@ -130,16 +121,16 @@
             ]
         },
         {
-            "file": "plugins/com.vliesaputra.deviceinformation/www/deviceinformation.js",
-            "id": "com.vliesaputra.deviceinformation.DeviceInformation",
+            "file": "plugins/cordova-plugin-device/www/device.js",
+            "id": "cordova-plugin-device.device",
             "clobbers": [
-                "cordova.plugins.deviceInformation"
+                "device"
             ]
         }
     ],
     "plugin_metadata": {
         "cordova-plugin-whitelist": "1.2.2",
         "mp-cordova-plugin-contacts": "1.1.1-dev",
-        "com.vliesaputra.deviceinformation": "1.0.1"
+        "cordova-plugin-device": "1.1.2"
     }
 }

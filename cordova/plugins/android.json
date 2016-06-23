@@ -13,8 +13,8 @@
         "mp-cordova-plugin-contacts": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
         },
-        "com.vliesaputra.deviceinformation": {
-            "PACKAGE_NAME": "io.cordova.hellocordova"
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.hearsay"
         }
     },
     "dependent_plugins": {}
