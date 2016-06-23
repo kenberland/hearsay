@@ -30,8 +30,6 @@ var app = {
     }
 };
 
-app.initialize();
-
 function onSuccess(contacts) {
     alert('Found ' + contacts.length + ' contacts.');
 };
@@ -39,12 +37,6 @@ function onSuccess(contacts) {
 function onError(contactError) {
     alert('onError!');
 };
-
-document.addEventListener("deviceready", onDeviceReady, false);
-function onDeviceReady() {
-  console.log(navigator.contacts);
-  doContacts();
-}
 
 function doContacts() {
   var options      = new ContactFindOptions();
@@ -55,3 +47,20 @@ function doContacts() {
   var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
   navigator.contacts.find(fields, onSuccess, onError, options);
 }
+
+function onDeviceReady() {
+  console.log(navigator.contacts);
+  doContacts();
+  deviceInfo.get( function(result) {
+    alert("result = " + result);
+  }, function() {
+    console.log("error");
+  });
+}
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+var deviceInfo = cordova.require("cordova/plugin/DeviceInformation");
+
+app.initialize();
+
