@@ -12,6 +12,9 @@
         },
         "mp-cordova-plugin-contacts": {
             "PACKAGE_NAME": "io.cordova.hellocordova"
+        },
+        "com.vliesaputra.deviceinformation": {
+            "PACKAGE_NAME": "io.cordova.hellocordova"
         }
     },
     "dependent_plugins": {}

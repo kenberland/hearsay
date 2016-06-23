@@ -15,5 +15,14 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "com.vliesaputra.deviceinformation": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/vliesaputra/DeviceInformationPlugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
