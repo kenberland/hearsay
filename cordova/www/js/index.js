@@ -49,7 +49,10 @@ var app = {
 };
 
 function onSuccess(contacts) {
-    alert('Found ' + contacts.length + ' contacts.');
+  alert('Found ' + contacts.length + ' contacts.');
+  var jsonContacts = JSON.stringify(contacts, null, 2);
+  var x = document.getElementsByClassName("contacts");
+  x[0].innerHTML = jsonContacts;
 };
 
 function onError(contactError) {
@@ -58,22 +61,19 @@ function onError(contactError) {
 
 function doContacts() {
   var options      = new ContactFindOptions();
-  options.filter   = "Bob";
+  options.filter  = "";
   options.multiple = true;
   options.desiredFields = [navigator.contacts.fieldType.id];
   options.hasPhoneNumber = true;
-  var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+  var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name, navigator.contacts.fieldType.phoneNumbers, navigator.contacts.fieldType.photos];
   navigator.contacts.find(fields, onSuccess, onError, options);
 }
 
 function onDeviceReady() {
-  console.log(navigator.contacts);
-  console.log(device.cordova);
   alert(device.uuid)
   doContacts();
 }
 
 document.addEventListener("deviceready", onDeviceReady, false);
-
 app.initialize();
 
