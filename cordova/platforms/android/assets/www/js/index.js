@@ -61,11 +61,13 @@ function onError(contactError) {
 
 function doContacts() {
   var options      = new ContactFindOptions();
-  options.filter  = "";
+  // options.filter  = "";
   options.multiple = true;
-  options.desiredFields = [navigator.contacts.fieldType.id];
-  options.hasPhoneNumber = true;
-  var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name, navigator.contacts.fieldType.phoneNumbers, navigator.contacts.fieldType.photos];
+  options.desiredFields = [navigator.contacts.fieldType.id ];
+  //, navigator.contacts.fieldType.displayName];
+  var fields = [navigator.contacts.fieldType.id];
+  // var fields = [];
+  //, navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name, navigator.contacts.fieldType.phoneNumbers, navigator.contacts.fieldType.photos];
   navigator.contacts.find(fields, onSuccess, onError, options);
 }
 
