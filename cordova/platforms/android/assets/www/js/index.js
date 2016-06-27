@@ -1,81 +1,95 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
-    // Bind Event Listeners
-    //
-    // Bind any events that are required on startup. Common events are:
-    // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
-    }
+  initialize: function() {
+    this.bindEvents();
+  },
+  bindEvents: function() {
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+  },
+  onDeviceReady: function() {
+    app.receivedEvent('deviceready');
+  },
+  receivedEvent: function(id) {
+    var parentElement = document.getElementById(id);
+    var listeningElement = parentElement.querySelector('.listening');
+    var receivedElement = parentElement.querySelector('.received');
+    listeningElement.setAttribute('style', 'display:none;');
+    receivedElement.setAttribute('style', 'display:block;');
+    console.log('Received Event: ' + id);
+  }
 };
 
-function onSuccess(contacts) {
-  alert('Found ' + contacts.length + ' contacts.');
-  var jsonContacts = JSON.stringify(contacts, null, 2);
-  var x = document.getElementsByClassName("contacts");
-  x[0].innerHTML = jsonContacts;
-};
-
-function onError(contactError) {
+var HearsayContacts = {
+  // PROPS
+  contact_ids: null,
+  current_contact: 0,
+  current_contact_detail: {},
+  // METHODS
+  onSuccess: function(contacts) {
+    console.log("contacts:" + JSON.stringify(contacts, null, 2));
+    HearsayContacts.contact_ids = contacts;
+    HearsayContacts.getOne(HearsayContacts.contact_ids[HearsayContacts.current_contact]["id"]);
+  },
+  onError: function(contactError) {
     alert('onError!');
+  },
+  onGetOneSuccess: function(contact) {
+    console.log("single contact:" + JSON.stringify(contact, null, 2));
+    HearsayContacts.current_contact_detail = contact[0];
+    HearsayContacts.paintCurrent();
+  },
+  onGetOneError: function(contactError){
+    alert('onError!');
+  },
+  perform: function() {
+    var options      = new ContactFindOptions();
+    options.multiple = true;
+    options.desiredFields = [navigator.contacts.fieldType.id ];
+    var fields = [navigator.contacts.fieldType.id];
+    navigator.contacts.find(fields, this.onSuccess, this.onError, options);
+  },
+  getOne: function(id) {
+    console.log("get one for id: " + id);
+    var options = new ContactFindOptions();
+    options.filter = id;
+    var fields = [navigator.contacts.fieldType.id];
+    navigator.contacts.find(fields, this.onGetOneSuccess, this.onGetOneError, options);
+  },
+  paintCurrent: function() {
+    this.paint(this.current_contact_detail);
+  },
+  paint: function(contact) {
+    $('#contact_name').html(contact.displayName);
+    $('#contact_image').attr("src",contact.photos[0].value);
+  },
+  next: function(){
+    this.current_contact++;
+    this.current_contact = (this.current_contact > (this.contact_ids.length - 1)) ? 0 : this.current_contact;
+    this.getOne(this.contact_ids[HearsayContacts.current_contact]["id"]);
+  },
+  previous: function(){
+    this.current_contact--;
+    this.current_contact = (this.current_contact < 0) ? (this.contact_ids.length - 1): this.current_contact;
+    this.getOne(this.contact_ids[HearsayContacts.current_contact]["id"]);
+  }
 };
-
-function doContacts() {
-  var options      = new ContactFindOptions();
-  // options.filter  = "";
-  options.multiple = true;
-  options.desiredFields = [navigator.contacts.fieldType.id ];
-  //, navigator.contacts.fieldType.displayName];
-  var fields = [navigator.contacts.fieldType.id];
-  // var fields = [];
-  //, navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name, navigator.contacts.fieldType.phoneNumbers, navigator.contacts.fieldType.photos];
-  navigator.contacts.find(fields, onSuccess, onError, options);
-}
 
 function onDeviceReady() {
-  alert(device.uuid)
-  doContacts();
+  console.log("device uuid: " + device.uuid);
+  HearsayContacts.perform();
 }
+
 
 document.addEventListener("deviceready", onDeviceReady, false);
 app.initialize();
 
+var event = new Event('deviceready');
+document.dispatchEvent(event);
+
+$("#next").click( function() {
+  HearsayContacts.next();
+}
+		);
+$("#previous").click( function() {
+  HearsayContacts.previous();
+}
+		);
