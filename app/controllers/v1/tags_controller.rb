@@ -1,4 +1,4 @@
-class TagsController < ApplicationController
+class V1::TagsController < ApplicationController
   protect_from_forgery with: :exception
   before_action :prevent_tagging_self, only: :create
 

@@ -1,4 +1,4 @@
-class TagLibraryController < ApplicationController
+class V1::TagLibraryController < ApplicationController
   protect_from_forgery with: :exception
 
   def show

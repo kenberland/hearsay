@@ -1,25 +1,29 @@
 Rails.application.routes.draw do
-  root to: 'unauthenticated#index'
-  get '/privacy', to: 'unauthenticated#privacy'
-
   get  '/status', to: 'application#status'
+  api_version(module: 'V1', header: {name: 'api_version', value: 'version=1'}, default: true) do
+    root to: 'unauthenticated#index'
+    get '/privacy', to: 'unauthenticated#privacy'
 
-  post '/auth/:provider/callback', to: 'sessions#create'
-  get  '/auth/:provider/callback', to: 'sessions#create'
 
-  resources :users, only: [] do
-    resources :tags, only: [:create, :destroy]
-  end
+    post '/auth/:provider/callback', to: 'sessions#create'
+    get  '/auth/:provider/callback', to: 'sessions#create'
 
-  resources :connections, only: [:index, :show] do
-    member do
-      get '/tag_cloud' => 'connections#tag_cloud'
+    resources :users, only: [] do
+      resources :tags, only: [:create, :destroy]
     end
-  end
-  resources :tag_library, only: [:show], param: :category do
-    resources :create, only: [:create], controller: :tag_library
-  end
 
-  get  '/browse', to: 'connections#browse'
-  get  '/browse/:id', to: 'connections#get_absolute_user'
+    resources :connections, only: [:index, :show] do
+      member do
+        get '/tag_cloud' => 'connections#tag_cloud'
+      end
+    end
+    resources :tag_library, only: [:show], param: :category do
+      resources :create, only: [:create], controller: :tag_library
+    end
+
+    get  '/browse', to: 'connections#browse'
+    get  '/browse/:id', to: 'connections#get_absolute_user'
+  end
+  api_version(module: 'V2', header: {name: 'api_version', value: 'version=2'}) do
+  end
 end
