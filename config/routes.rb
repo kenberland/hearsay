@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get  '/status', to: 'application#status'
-  api_version(module: 'V1', header: {name: 'api_version', value: 'version=1'}, default: true) do
+  api_version(module: 'V1', header: {name: 'API-VERSION', value: '1'}, default: true) do
     root to: 'unauthenticated#index'
     get '/privacy', to: 'unauthenticated#privacy'
 
@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     get  '/browse', to: 'connections#browse'
     get  '/browse/:id', to: 'connections#get_absolute_user'
   end
-  api_version(module: 'V2', header: {name: 'api_version', value: 'version=2'}) do
+  api_version(module: 'V2', header: {name: 'API-VERSION', value: '2'}) do
+    resources :tags, only: [:show]
   end
 end
