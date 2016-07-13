@@ -25,6 +25,6 @@ Rails.application.routes.draw do
     get  '/browse/:id', to: 'connections#get_absolute_user'
   end
   api_version(module: 'V2', header: {name: 'API-VERSION', value: '2'}) do
-    resources :tags, only: [:show]
+    resources :tags, only: [:show, :index]
   end
 end

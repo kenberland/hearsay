@@ -1,6 +1,6 @@
 class V2::TagsController < ApplicationController
 
-  def show
+  def index
     tags = Tag.joins(:tag_category).pluck(:tag, '"tag_categories"."category"').group_by{|category| category.last}
 
     tag_array = tags.each_with_object([]) do |(key, value), return_array|
