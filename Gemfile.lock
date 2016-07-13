@@ -129,6 +129,7 @@ GEM
       omniauth (~> 1.2)
     pg (0.18.4)
     rack (1.6.4)
+    rack-cors (0.4.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.5.1)
@@ -236,6 +237,7 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-linkedin
   pg
+  rack-cors
   rails (= 4.2.5.1)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
@@ -251,4 +253,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.12.0.rc
+   1.12.5
