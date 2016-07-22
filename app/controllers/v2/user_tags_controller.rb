@@ -1,6 +1,8 @@
 class V2::UserTagsController < ApplicationController
+  skip_before_action :verify_authenticity_token
 
   def index
+    uuid = PhonyRails.normalize_number(params[:user_id])
     uuid = '103048943427138'
     tags = get_tags uuid
     tag_counts = count uuid
@@ -17,15 +19,15 @@ class V2::UserTagsController < ApplicationController
   end
 
   def create
-    debugger;1
-    # new_tag = Tag.find params[:tag][:id]
-    # new_user_tag = User.find_by(uid: params[:user_id]).user_tags.build tag_id: new_tag.id, from_user_uid: current_user.uid
-    # begin
-    #   new_user_tag.save
-    # rescue PG::UniqueViolation => e
-    #   Rails.logger.error e
-    # end
-    # redirect_to tag_cloud_connection_path(params[:users][:index]), status: 303
+    new_tag = Tag.find params[:tag][:id]
+    user_number = PhonyRails.normalize_number(params[:user_id])
+    new_user_tag = User.find_by(uid: user_number).user_tags.build tag_id: new_tag.id, from_user_uid: current_user.uid
+    begin
+      new_user_tag.save
+    rescue PG::UniqueViolation => e
+      Rails.logger.error e
+    end
+    redirect_to tag_cloud_connection_path(params[:users][:index]), status: 303
   end
 
   private
