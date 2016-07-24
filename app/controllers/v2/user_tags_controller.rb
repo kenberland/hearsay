@@ -2,10 +2,12 @@ class V2::UserTagsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    uuid = PhonyRails.normalize_number(params[:user_id])
-    uuid = '103048943427138'
-    tags = get_tags uuid
-    tag_counts = count uuid
+    user_number = PhonyRails.normalize_number(params[:user_id])
+
+    return render status: 404, text: 'User Not Found' unless User.find_by_phone_number(user_number)
+
+    tags = get_tags user_number
+    tag_counts = count user_number
     tag_categories = TagCategory.all.pluck(:id, :category).to_h
 
     user_cloud = tag_counts.each_with_object([]) do |(key, value), return_array|
@@ -19,6 +21,7 @@ class V2::UserTagsController < ApplicationController
   end
 
   def create
+    current_user = params[:currentUser]
     new_tag = Tag.find params[:tag][:id]
     user_number = PhonyRails.normalize_number(params[:user_id])
     new_user_tag = User.find_by(uid: user_number).user_tags.build tag_id: new_tag.id, from_user_uid: current_user.uid
