@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   api_version(module: 'V2', header: {name: 'API-VERSION', value: '2'}) do
     resources :tags, only: [:index]
 
-    resources :users, only: [:create] do
+    resources :users, only: [] do
       resources :tags, only: [:index, :create], controller: 'user_tags'
     end
   end
