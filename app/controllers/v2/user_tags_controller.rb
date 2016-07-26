@@ -43,12 +43,13 @@ class V2::UserTagsController < ApplicationController
 
   def render_index
     user_number = PhonyRails.normalize_number(params[:user_id])
+    current_user = params[:currentUser]
 
     tag_counts = count user_number
     tag_categories = TagCategory.all.pluck(:id, :category).to_h
 
     user_cloud = tag_counts.each_with_object([]) do |(key, value), return_array|
-      is_current_user = key[1] == params[:currentUser]
+      is_current_user = key[1] == current_user
       tag = current_tag(key)
       return_array << {
         category: tag_category(tag_categories, tag),
