@@ -28,7 +28,7 @@ module Hearsay
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
         origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :options], expose: 'X-CSRF-Token'
+        resource '*', :headers => :any, :methods => [:get, :post, :options, :delete], expose: 'X-CSRF-Token'
       end
     end
   end

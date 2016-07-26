@@ -25,6 +25,20 @@ class V2::UserTagsController < ApplicationController
     render_index
   end
 
+  def destroy
+    from_user_uuid = params[:currentUser]
+    to_user_uuid = PhonyRails.normalize_number(params[:user_id])
+    tag_id = params[:id]
+
+    user_tag = UserTag.where({
+      tag_id: tag_id,
+      from_user_uid: from_user_uuid,
+      to_user_uid: to_user_uuid
+    })
+    user_tag.destroy_all
+    render_index
+  end
+
   private
 
   def render_index
@@ -38,7 +52,7 @@ class V2::UserTagsController < ApplicationController
       tag = current_tag(key)
       return_array << {
         category: tag_category(tag_categories, tag),
-        tags: [{tag.tag => value}, {is_current_user: is_current_user}]
+        tags: [{tag.tag => value}, {is_current_user: is_current_user}, {tagId: tag.id}]
       }
     end
     render json: user_cloud

@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     resources :tags, only: [:index]
 
     resources :users, only: [] do
-      resources :tags, only: [:index, :create], controller: 'user_tags'
+      resources :tags, only: [:index, :create, :destroy], controller: 'user_tags'
     end
   end
 end
