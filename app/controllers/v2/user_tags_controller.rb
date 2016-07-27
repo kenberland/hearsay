@@ -53,7 +53,10 @@ class V2::UserTagsController < ApplicationController
       tag = current_tag(key)
       return_array << {
         category: tag_category(tag_categories, tag),
-        tags: [{tag.tag => value}, {is_current_user: is_current_user}, {tagId: tag.id}]
+        count: value,
+        name: tag.tag,
+        is_current_user: is_current_user,
+        tagId: tag.id
       }
     end
     render json: user_cloud
