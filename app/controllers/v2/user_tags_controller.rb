@@ -8,7 +8,12 @@ class V2::UserTagsController < ApplicationController
   def create
     from_user_uuid = params[:currentUser]
     to_user_uuid = PhonyRails.normalize_number(params[:user_id])
-    new_tag = Tag.find params[:tag][:id]
+
+    if params[:tag][:id]
+      new_tag = Tag.find params[:tag][:id]
+    else
+      new_tag = create_new_tag(params[:tag][:newTag], params[:tag][:category])
+    end
 
     new_user_tag = UserTag.new({
       from_user_uid: from_user_uuid,
@@ -28,7 +33,12 @@ class V2::UserTagsController < ApplicationController
   def destroy
     from_user_uuid = params[:currentUser]
     to_user_uuid = PhonyRails.normalize_number(params[:user_id])
-    tag_id = params[:id]
+
+    if params[:id] != 'null'
+      tag_id = params[:id]
+    else
+      tag_id = create_new_tag(params[:tag][:name], params[:tag][:category])
+    end
 
     user_tag = UserTag.where({
       tag_id: tag_id,
@@ -80,5 +90,10 @@ class V2::UserTagsController < ApplicationController
 
   def count(user_id)
     UserTag.where(to_user_uid: user_id).group([:to_user_uid, :from_user_uid, :tag_id]).order('count_tag_id desc').count(:tag_id)
+  end
+
+  def create_new_tag(name, category)
+    tc = TagCategory.find_by_category category
+    Tag.find_or_create_by({ tag: name, tag_category: tc }) rescue PG::UniqueViolation
   end
 end
