@@ -1,0 +1,33 @@
+---
+lawyers:
+  - honesty
+  - crooked
+  - winning
+  - losing
+  - expensive
+  - affordable
+finance:
+  - thrifty
+  - spendthrift
+  - tight
+roomates:
+  - messy
+  - unfair
+  - loud
+work:
+  - late
+  - lazy
+  - trustworthy
+relationships:
+  - selfish
+  - cold
+  - loving
+school:
+  - straight-As
+  - class-clown
+  - popular
+  - mean
+sports:
+  - ball hog
+  - mvp
+  - sore loser
