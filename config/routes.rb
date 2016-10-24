@@ -30,5 +30,7 @@ Rails.application.routes.draw do
     resources :users, only: [] do
       resources :tags, only: [:index, :create, :destroy], controller: 'user_tags'
     end
+
+    post '/registrations/:device_uuid', to: 'registrations#create'
   end
 end
