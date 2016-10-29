@@ -32,5 +32,6 @@ Rails.application.routes.draw do
     end
 
     post '/registrations/:device_uuid', to: 'registrations#create'
+    post '/phone_number_registrations/:device_uuid', to: 'phone_number_registrations#create'
   end
 end

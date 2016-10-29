@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024174647) do
+ActiveRecord::Schema.define(version: 20161025170516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "phone_number_registrations", force: :cascade do |t|
+    t.string   "device_phone_number", limit: 255
+    t.string   "device_uuid"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "registrations", force: :cascade do |t|
     t.string   "registration_id"

@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  device_phone_number: MyString
+  device_uuid: MyString
+
+two:
+  device_phone_number: MyString
+  device_uuid: MyString
