@@ -1,14 +1,17 @@
 class PushClient
   attr_accessor :gcm
 
-  def send(ids,msg)
-    ids.each do |id|
-      method = typeof_id(id) == 'ios' ? :send_ios : :send_android
-      self.send(method, id, msg)
-    end
+  def push(id)
+    self.send(method(id), id)
   end
 
-  def send_android(ids, msg)
+  private
+
+  def method(id)
+    :send_android
+  end
+
+  def send_android(id)
     msg ||= {
       data: {
         title: { "locKey": "app_name" },
@@ -19,7 +22,7 @@ class PushClient
 
       },
     }
-    gcm.send(ids, msg)
+    gcm.send([id], msg)
   end
 
   def send_ios(ids, msg)
