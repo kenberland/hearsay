@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025170516) do
+ActiveRecord::Schema.define(version: 20161114221207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,10 +52,11 @@ ActiveRecord::Schema.define(version: 20161025170516) do
 
   create_table "user_tags", force: :cascade do |t|
     t.integer  "tag_id"
-    t.string   "from_user_uid", null: false
-    t.string   "to_user_uid",   null: false
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.string   "from_user_uid",      null: false
+    t.string   "to_user_uid",        null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "notification_state"
   end
 
   add_index "user_tags", ["from_user_uid", "to_user_uid", "tag_id"], name: "index_user_tags_unique_on_to_from_tag", unique: true, using: :btree
