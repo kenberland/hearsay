@@ -7,7 +7,7 @@ class V2::UserTagsController < ApplicationController
 
   def create
     from_user_uuid = params[:currentUser]
-    to_user_uuid = PhonyRails.normalize_number(params[:user_id])
+    to_user_uuid = Phony.normalize(params[:user_id], cc: '1')
 
     if params[:tag][:id]
       new_tag = Tag.find params[:tag][:id]
@@ -32,7 +32,7 @@ class V2::UserTagsController < ApplicationController
 
   def destroy
     from_user_uuid = params[:currentUser]
-    to_user_uuid = PhonyRails.normalize_number(params[:user_id])
+    to_user_uuid = Phony.normalize(params[:user_id], cc: '1')
 
     if params[:id] != 'null'
       tag_id = params[:id]
@@ -52,7 +52,7 @@ class V2::UserTagsController < ApplicationController
   private
 
   def render_index
-    user_number = PhonyRails.normalize_number(params[:user_id])
+    user_number = Phony.normalize(params[:user_id], cc: '1')
     current_user = params[:currentUser]
 
     tag_counts = count user_number
