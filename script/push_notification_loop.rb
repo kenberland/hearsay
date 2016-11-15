@@ -1,7 +1,7 @@
 class PushNotificationLoop
   attr_accessor :push_client
 
-  def initiailize
+  def initialize
     @push_client = PushClient.new
   end
 
