@@ -8,7 +8,7 @@ class PushClient
   private
 
   def method(id)
-    :send_android
+    id.size == 64 ? :send_ios : :send_android
   end
 
   def send_android(id)
@@ -25,13 +25,13 @@ class PushClient
     gcm.send([id], msg)
   end
 
-  def send_ios(ids, msg)
+  def send_ios(id)
     msg ||= {
       :alert => "You've been tagged!",
       :badge => 1,
       :sound => 'default',
     }
-    APNS.send_notification(ids, msg)
+    APNS.send_notification(id, msg)
   end
 
   def initialize
