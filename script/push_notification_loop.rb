@@ -27,9 +27,9 @@ class PushNotificationLoop
     if user_tag
       puts "attempting to notify about UserTag #{user_tag.id} #{user_tag.notification_state}"
       phone_number = user_tag.to_user_uid
-      device_uuid = PhoneNumberRegistration.find_by_device_phone_number(phone_number).try(:device_uuid)
+      device_uuid = PhoneNumberRegistration.order('created_at desc').find_by_device_phone_number(phone_number).try(:device_uuid)
       if device_uuid
-        registration_id = Registration.find_by_device_uuid(device_uuid).try(:registration_id)
+        registration_id = Registration.order('created_at desc').find_by_device_uuid(device_uuid).try(:registration_id)
         if registration_id
           puts "notify id: #{registration_id} for user at phone #{phone_number}"
         else
