@@ -6,8 +6,12 @@ class V2::UserTagsController < ApplicationController
   end
 
   def create
-    from_user_uuid = params[:currentUser]
+    from_phone = PhoneNumberRegistration.find_by(device_uuid: params[:currentUser]).try(:device_phone_number)
+    if from_phone == Phony.normalize(params[:user_id], cc: '1')
+      return render(text: I18n.t('errors.self-tagging'), status: 400)
+    end
     to_user_uuid = Phony.normalize(params[:user_id], cc: '1')
+    from_user_uuid = params[:currentUser]
 
     if params[:tag][:id]
       new_tag = Tag.find params[:tag][:id]
