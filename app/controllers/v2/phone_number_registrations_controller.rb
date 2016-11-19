@@ -1,10 +1,16 @@
+ZANG_SID='AC22889084348c16ca3f864deb83176b15'
+ZANG_URL='https://api.zang.io/v2/Accounts'
+ZANG_PHONENUMBER='14153583290'
+
 class V2::PhoneNumberRegistrationsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
     params[:device_phone_number] = normalize_us_phone_number(params[:device_phone_number])
     result = PhoneNumberRegistration.create! phone_number_registration_params
-    render json: result
+    result_to_return = result.attributes
+    p send_verification_sms(result.device_phone_number, result_to_return.delete('verification_code'))
+    render json: result_to_return
   rescue ActiveRecord::RecordInvalid => e
     render json: { error: { RecordInvalid: e.record.errors } }, status: 400
   end
@@ -19,5 +25,17 @@ class V2::PhoneNumberRegistrationsController < ApplicationController
 
   def phone_number_registration_params
     params.permit(:device_uuid, :device_phone_number)
+  end
+
+  def send_verification_sms(destination, verification_code)
+    auth = { :username => ZANG_SID, :password => ENV['ZANG_AUTH_TOKEN'] }
+    @verification_code = verification_code
+    message = render_to_string :sms_message
+
+    HTTParty.post("#{ZANG_URL}/#{ZANG_SID}/SMS/Messages",
+                  body: { To: destination,
+                          From: ZANG_PHONENUMBER,
+                          Body:  message },
+                  basic_auth: auth)
   end
 end

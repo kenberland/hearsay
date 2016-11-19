@@ -1,0 +1,8 @@
+.well
+  .jumbotron
+    - if @registered
+      p
+        | Thank you for registering.  You may now use the app.
+    - else
+      p
+        | Something went wrong.  Perhaps your verification code is wrong.
