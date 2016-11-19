@@ -6,7 +6,7 @@ class V2::UserTagsController < ApplicationController
   end
 
   def create
-    from_phone = PhoneNumberRegistration.find_by(device_uuid: params[:currentUser]).try(:device_phone_number)
+    from_phone = PhoneNumberRegistration.order('created_at desc').find_by(device_uuid: params[:currentUser]).try(:device_phone_number)
     if from_phone == Phony.normalize(params[:user_id], cc: '1')
       return render(text: I18n.t('errors.self-tagging'), status: 400)
     end

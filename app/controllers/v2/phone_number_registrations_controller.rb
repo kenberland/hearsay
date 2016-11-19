@@ -1,4 +1,3 @@
-ZANG_SID='AC22889084348c16ca3f864deb83176b15'
 ZANG_URL='https://api.zang.io/v2/Accounts'
 ZANG_PHONENUMBER='14153583290'
 
@@ -28,11 +27,11 @@ class V2::PhoneNumberRegistrationsController < ApplicationController
   end
 
   def send_verification_sms(destination, verification_code)
-    auth = { :username => ZANG_SID, :password => ENV['ZANG_AUTH_TOKEN'] }
+    auth = { :username => ENV['ZANG_SID'], :password => '' }
     @verification_code = verification_code
     message = render_to_string :sms_message
 
-    HTTParty.post("#{ZANG_URL}/#{ZANG_SID}/SMS/Messages",
+    HTTParty.post("#{ZANG_URL}/#{ENV['ZANG_SID']}/SMS/Messages",
                   body: { To: destination,
                           From: ZANG_PHONENUMBER,
                           Body:  message },
