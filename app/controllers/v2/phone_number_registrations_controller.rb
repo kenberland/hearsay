@@ -27,14 +27,18 @@ class V2::PhoneNumberRegistrationsController < ApplicationController
   end
 
   def send_verification_sms(destination, verification_code)
-    auth = { :username => ENV['ZANG_SID'], :password => '' }
     @verification_code = verification_code
     message = render_to_string :sms_message
 
-    HTTParty.post("#{ZANG_URL}/#{ENV['ZANG_SID']}/SMS/Messages",
-                  body: { To: destination,
-                          From: ZANG_PHONENUMBER,
-                          Body:  message },
-                  basic_auth: auth)
+    if ENV['ZANG_SID']
+      auth = { :username => ENV['ZANG_SID'], :password => '' }
+      HTTParty.post("#{ZANG_URL}/#{ENV['ZANG_SID']}/SMS/Messages",
+                    body: { To: destination,
+                            From: ZANG_PHONENUMBER,
+                            Body:  message },
+                    basic_auth: auth)
+    else
+      Rails.logger.error message
+    end
   end
 end
