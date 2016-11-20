@@ -7,3 +7,4 @@ en:
     your-profile: 'Your Profile'
   errors:
     self-tagging: 'You cannot tag yourself!'
+    unverified: 'You cannot tag until you verify your device!'

@@ -5,11 +5,27 @@ class V2::UserTagsController < ApplicationController
     render_index
   end
 
+  def registration
+    PhoneNumberRegistration.order('created_at desc').find_by(device_uuid: params[:currentUser])
+  end
+
+  def verified?
+    registration.try(:verification_state) == "verified"
+  end
+
+  def from_phone
+    registration.try(:device_phone_number)
+  end
+
   def create
-    from_phone = PhoneNumberRegistration.order('created_at desc').find_by(device_uuid: params[:currentUser]).try(:device_phone_number)
+    unless verified?
+      return render(text: I18n.t('errors.unverified'), status: 400)
+    end
+
     if from_phone == Phony.normalize(params[:user_id], cc: '1')
       return render(text: I18n.t('errors.self-tagging'), status: 400)
     end
+
     to_user_uuid = Phony.normalize(params[:user_id], cc: '1')
     from_user_uuid = params[:currentUser]
 
