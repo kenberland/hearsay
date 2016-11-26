@@ -13,38 +13,35 @@
 
 ActiveRecord::Schema.define(version: 20161118162101) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "phone_number_registrations", force: :cascade do |t|
     t.string   "device_phone_number", limit: 255
-    t.string   "device_uuid"
+    t.string   "device_uuid",         limit: 255
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
-    t.integer  "verification_state",              default: 0
-    t.string   "verification_code"
+    t.integer  "verification_state",  limit: 4,   default: 0
+    t.string   "verification_code",   limit: 255
   end
 
   create_table "registrations", force: :cascade do |t|
-    t.string   "registration_id"
-    t.string   "device_uuid"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string   "registration_id", limit: 255
+    t.string   "device_uuid",     limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "tag_categories", force: :cascade do |t|
-    t.string   "category"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "category",   limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "tag_categories", ["category"], name: "index_tag_categories_on_category", unique: true, using: :btree
 
   create_table "tags", force: :cascade do |t|
-    t.string   "tag",             null: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.integer  "tag_category_id"
+    t.string   "tag",             limit: 255, null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "tag_category_id", limit: 4
     t.boolean  "is_library_tag"
   end
 
@@ -53,12 +50,12 @@ ActiveRecord::Schema.define(version: 20161118162101) do
   add_index "tags", ["tag_category_id"], name: "index_tags_on_tag_category_id", using: :btree
 
   create_table "user_tags", force: :cascade do |t|
-    t.integer  "tag_id"
-    t.string   "from_user_uid",      null: false
-    t.string   "to_user_uid",        null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-    t.integer  "notification_state"
+    t.integer  "tag_id",             limit: 4
+    t.string   "from_user_uid",      limit: 255, null: false
+    t.string   "to_user_uid",        limit: 255, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "notification_state", limit: 4
   end
 
   add_index "user_tags", ["from_user_uid", "to_user_uid", "tag_id"], name: "index_user_tags_unique_on_to_from_tag", unique: true, using: :btree
@@ -67,16 +64,16 @@ ActiveRecord::Schema.define(version: 20161118162101) do
   add_index "user_tags", ["to_user_uid"], name: "index_user_tags_on_to_user_uid", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "uid"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "image"
-    t.string   "token"
-    t.string   "secret"
+    t.string   "uid",          limit: 255
+    t.string   "first_name",   limit: 255
+    t.string   "last_name",    limit: 255
+    t.string   "image",        limit: 255
+    t.string   "token",        limit: 255
+    t.string   "secret",       limit: 255
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.string   "location",     limit: 255
-    t.string   "phone_number"
+    t.string   "phone_number", limit: 255
   end
 
   add_foreign_key "tags", "tag_categories"

@@ -1,11 +1,5 @@
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
 default: &default
-  adapter: postgresql
+  adapter: mysql2
   pool: 5
   timeout: 5000
   database: <%= "#{Hearsay::Application.config.company_name.downcase}-#{Rails.env}" %>
@@ -24,4 +18,3 @@ production:
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASS'] %>
   host: <%= ENV['DATABASE_HOST'] %>
-  
