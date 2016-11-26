@@ -1,0 +1,22 @@
+sudo apt-get update
+sudo apt-get install -y emacs24-nox cryptsetup-luks git postgresql-client-common postgresql-client libgmp3-dev libpq-dev
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+\curl -sSL https://get.rvm.io | bash -s stable --ruby
+
+source /home/ubuntu/.rvm/scripts/rvm
+rvm install ruby-2.3.0
+
+hostname hearsay.hero.com
+
+dd if=/dev/zero of=/var/tmp/cryptofs bs=1024 count=10240
+losetup /dev/loop0 /var/tmp/cryptofs 
+cryptsetup luksFormat /dev/loop0
+losetup /dev/loop0 /var/tmp/cryptofile 
+cryptsetup luksOpen /dev/loop0 crypto-fs
+mkdir mount-cryptofile
+mkfs.ext4 /dev/mapper/crypto-fs 
+mount /dev/mapper/crypto-fs /var/tmp/mount-cryptofile/
+mv /etc/profile.d/hearsay-secrets.sh /var/tmp/mount-cryptofile/
+ln -s /var/tmp/mount-cryptofile/hearsay-secrets.sh 
+chown ubuntu.ubuntu /var/tmp/mount-cryptofile/
+

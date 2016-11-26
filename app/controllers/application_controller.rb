@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
   end
 
   def status
-    ActiveRecord::Base.connection.execute('SELECT now()')
-    render json: {status: 'OK'}.merge(ActiveRecord::Base.connection.execute('SELECT NOW()').first).to_json
+    render json: {status: 'OK'}.merge(ActiveRecord::Base.connection.execute('SELECT "now", now()').to_h)
   end
 end
