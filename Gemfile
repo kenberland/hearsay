@@ -14,6 +14,7 @@ gem 'mysql2'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin'
+gem "paranoia", "~> 2.2"
 gem 'phony_rails'
 gem 'rack-cors'
 gem 'rails', '4.2.5.1'

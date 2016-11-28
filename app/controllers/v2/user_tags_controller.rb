@@ -54,6 +54,10 @@ class V2::UserTagsController < ApplicationController
     from_user_uuid = params[:currentUser]
     to_user_uuid = Phony.normalize(params[:user_id], cc: '1')
 
+    if from_phone == to_user_uuid
+      return render(text: I18n.t('errors.self-tag-delete'), status: 400)
+    end
+
     if params[:id] != 'null'
       tag_id = params[:id]
     else

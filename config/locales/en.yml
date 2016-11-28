@@ -8,3 +8,4 @@ en:
   errors:
     self-tagging: 'You cannot tag yourself!'
     unverified: 'You cannot tag until you verify your device!'
+    self-tag-delete: 'You cannot delete your own tag'
