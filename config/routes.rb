@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   api_version(module: 'V1', header: {name: 'API-VERSION', value: '1'}, default: true) do
     root to: 'unauthenticated#index'
     get '/privacy', to: 'unauthenticated#privacy'
-    get '/verify/:verification_code', to: 'unauthenticated#verify', as: 'verify'
+    get '/verify/:verification_code', to: 'unauthenticated#show', as: 'verify'
+    post'/verify/:verification_code', to: 'unauthenticated#update', as: 'post_verify'
 
     post '/auth/:provider/callback', to: 'sessions#create'
     get  '/auth/:provider/callback', to: 'sessions#create'
