@@ -43,7 +43,7 @@ class V2::UserTagsController < ApplicationController
 
     begin
       new_user_tag.save
-    rescue PG::UniqueViolation => e
+    rescue ActiveRecord::RecordNotUnique => e
       Rails.logger.error e
     end
 
