@@ -1,0 +1,12 @@
+.well
+  .jumbotron
+    - if @registration
+      p
+        | Welcome to Hearsay.  Please verify your account.
+      p
+        = form_tag do
+          button.btn.btn-primary.btn-lg
+            | Verify!
+    - else
+      p
+        | Something went wrong.  Perhaps your verification code is wrong.

@@ -5,7 +5,7 @@
       em
         ' Give him a mask, and he will tell you the truth.
     - unless current_user
-      p.login-button
+      p.btn.btn-primary
         <fb:login-button scope="public_profile,user_relationships,user_location" display="page" size="xlarge" onlogin="checkLoginState();">
         </fb:login-button>
     h5.status
