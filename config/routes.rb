@@ -33,5 +33,6 @@ Rails.application.routes.draw do
 
     post '/registrations/:device_uuid', to: 'registrations#create'
     post '/phone_number_registrations/:device_uuid', to: 'phone_number_registrations#create'
+    resources :marketing, only: [:index]
   end
 end
