@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'apns'
+gem 'audited', '~> 4.3'
 gem 'capistrano'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'gcm'
