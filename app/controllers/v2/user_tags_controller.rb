@@ -43,8 +43,9 @@ class V2::UserTagsController < ApplicationController
 
     attributes = new_user_tag.attributes
     attributes = attributes.except(*%w(created_at updated_at deleted_at id notification_state))
-    deleted_record = UserTag.unscoped.where(attributes)
-    if (deleted_record)
+    deleted_records = UserTag.unscoped.where(attributes)
+
+    if (deleted_records.count > 0)
       deleted_record.first.restore
     else
       begin
