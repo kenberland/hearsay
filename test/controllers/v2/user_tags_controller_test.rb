@@ -50,4 +50,12 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
       assert_response 400
     end
   end
+  test 'allow deleting tags the user puts on another user' do
+  end
+  test 'restore the soft-deleted tag when it is restored' do
+  end
+  test 'disallow deleting tags the user did not put on another user' do
+  end
+  test 'allow a user to delete tags that are on them' do
+  end
 end
