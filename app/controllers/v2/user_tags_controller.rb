@@ -124,6 +124,6 @@ class V2::UserTagsController < ApplicationController
 
   def create_new_tag(name, category)
     tc = TagCategory.find_by_category category
-    Tag.find_or_create_by({ tag: name, tag_category: tc }) rescue PG::UniqueViolation
+    Tag.find_or_create_by({ tag: name, tag_category: tc }) rescue ActiveRecord::RecordNotUnique
   end
 end

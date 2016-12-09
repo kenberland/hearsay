@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20161209173848) do
   add_index "tag_categories", ["category"], name: "index_tag_categories_on_category", unique: true, using: :btree
 
   create_table "tags", force: :cascade do |t|
-    t.string   "tag",             limit: 255
+    t.string   "tag",             limit: 255, null: false
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.integer  "tag_category_id", limit: 4

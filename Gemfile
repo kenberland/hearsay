@@ -29,6 +29,10 @@ gem 'unicorn'
 gem 'uglifier', '>= 1.3.0'
 gem 'versionist'
 
+group :test do
+  gem 'factory_girl'
+end
+
 group :development, :test do
   gem 'byebug'
 end
