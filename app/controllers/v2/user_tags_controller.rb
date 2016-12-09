@@ -36,17 +36,23 @@ class V2::UserTagsController < ApplicationController
     end
 
     new_user_tag = UserTag.new({
-      from_user_uid: from_user_uuid,
-      to_user_uid: to_user_uuid,
-      tag_id: new_tag.id
-    })
+                                 from_user_uid: from_user_uuid,
+                                 to_user_uid: to_user_uuid,
+                                 tag_id: new_tag.id
+                               })
 
-    begin
-      new_user_tag.save
-    rescue ActiveRecord::RecordNotUnique => e
-      Rails.logger.error e
+    attributes = new_user_tag.attributes
+    attributes = attributes.except(*%w(created_at updated_at deleted_at id notification_state))
+    deleted_record = UserTag.unscoped.where(attributes)
+    if (deleted_record)
+      deleted_record.first.restore
+    else
+      begin
+        new_user_tag.save
+      rescue ActiveRecord::RecordNotUnique => e
+        Rails.logger.error e
+      end
     end
-
     render_index
   end
 
