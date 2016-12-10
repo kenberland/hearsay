@@ -1,39 +1,43 @@
 require 'test_helper'
 
 def my_phone_number
-  '12123456789'
+  Faker::PhoneNumber.phone_number.gsub(/\D/,'')
+end
+
+def random_tag
+  Tag.all[rand*Tag.count].id
 end
 
 class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
   test 'deny tag creation when user is not registered' do
     reg = FactoryGirl.build(:phone_number_registration)
+    params = { 'currentUser' => reg.device_uuid, tag: { id: random_tag } }
     assert_difference('UserTag.count', 0) do
-      xml_http_request(:post,
-                       user_tags_url(my_phone_number),
-                       parameters = { 'currentUser' => reg.device_uuid, tag: { id: '3' } },
-                       headers_or_env = { 'API-VERSION' => 2 }
-                      )
+      hearsay_xml_http_request(:post,
+                               user_tags_url(my_phone_number),
+                               parameters = params
+                              )
       assert_response 400
     end
   end
   test 'deny tag creation when user is not veririfed' do
     reg = FactoryGirl.create(:phone_number_registration)
+    params = { 'currentUser' => reg.device_uuid, tag: { id: random_tag } }
     assert_difference('UserTag.count', 0) do
-      xml_http_request(:post,
-                       user_tags_url(my_phone_number),
-                       parameters = { 'currentUser' => reg.device_uuid, tag: { id: '3' } },
-                       headers_or_env = { 'API-VERSION' => 2 }
-                      )
+      hearsay_xml_http_request(:post,
+                               user_tags_url(my_phone_number),
+                               parameters = params
+                              )
       assert_response 400
     end
   end
   test 'allow tag creation when user is verified' do
     assert_difference('UserTag.count', 1) do
       reg = FactoryGirl.create(:phone_number_registration, :verified)
-      xml_http_request(:post,
+      params = { 'currentUser' => reg.device_uuid, tag: { id: random_tag } }
+      hearsay_xml_http_request(:post,
                        user_tags_url(my_phone_number),
-                       parameters = { 'currentUser' => reg.device_uuid, tag: { id: '3' } },
-                       headers_or_env = { 'API-VERSION' => 2 }
+                       parameters = params
                       )
       assert_response 200
     end
@@ -41,11 +45,11 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
   test 'disallow tagging yourself' do
     assert_difference('UserTag.count', 0) do
       reg = FactoryGirl.create(:phone_number_registration, :verified)
-      xml_http_request(:post,
-                       user_tags_url(reg.device_phone_number),
-                       parameters = { 'currentUser' => reg.device_uuid, tag: { id: '3' } },
-                       headers_or_env = { 'API-VERSION' => 2 }
-                      )
+      params = { 'currentUser' => reg.device_uuid, tag: { id: random_tag } }
+      hearsay_xml_http_request(:post,
+                               user_tags_url(reg.device_phone_number),
+                               parameters = params
+                              )
       assert_equal('You cannot tag yourself!', response.body)
       assert_response 400
     end
