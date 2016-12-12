@@ -38,7 +38,7 @@ class V2::PhoneNumberRegistrationsController < ApplicationController
                             Body:  message },
                     basic_auth: auth)
     else
-      Rails.logger.error message
+      Rails.logger.error message.red
     end
   end
 end

@@ -90,9 +90,25 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                               )
     end
   end
-  test 'restore the soft-deleted tag when it is re-added' do
-  end
   test 'disallow deleting tags the user did not put on another user' do
+    my_tag = random_tag
+    target_user = target_phone_number
+    tagging_user = FactoryGirl.create(:phone_number_registration, :verified)
+    other_user = FactoryGirl.create(:phone_number_registration, :verified)
+    params = { 'currentUser' => tagging_user.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_user),
+                             parameters = params
+                            )
+    params = { 'currentUser' => other_user.device_uuid }
+    assert_difference('UserTag.count', 0) do
+      hearsay_xml_http_request(:delete,
+                               user_tag_url(target_user, my_tag),
+                               parameters = params
+                              )
+    end
+  end
+  test 'restore the soft-deleted tag when it is re-added' do
   end
   test 'allow a user to delete tags that are on them' do
   end
