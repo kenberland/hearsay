@@ -46,7 +46,7 @@ class V2::UserTagsController < ApplicationController
     deleted_records = UserTag.unscoped.where(attributes)
 
     if (deleted_records.count > 0)
-      deleted_records.first.restore
+      deleted_records.first.update_attributes(deleted_at: nil, notification_state: nil)
     else
       begin
         new_user_tag.save

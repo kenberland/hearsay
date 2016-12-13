@@ -15,16 +15,7 @@ class PushNotificationLoop
   private
 
   def run
-    user_tag = nil
-    UserTag.transaction do
-      user_tag = UserTag.lock.limit(1).where(notification_state: nil).first
-      if user_tag
-        user_tag.notification_state = :in_progress
-        user_tag.save!
-      end
-    end
-
-    if user_tag
+    if user_tag = TagPushManager.instance.reserve
       puts "attempting to notify about UserTag #{user_tag.id} #{user_tag.notification_state}"
       phone_number = user_tag.to_user_uid
       device_uuid = PhoneNumberRegistration.order('created_at desc').find_by_device_phone_number(phone_number).try(:device_uuid)
