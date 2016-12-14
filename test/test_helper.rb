@@ -15,3 +15,15 @@ def hearsay_xml_http_request(method, path, parameters)
                    headers_or_env = headers
                   )
 end
+
+# Mess, courtesy of https://github.com/floere/phony/issues/266
+def normalized_fake_number
+  phone = nil
+  normal = nil
+  loop do
+    phone = Faker::PhoneNumber.phone_number
+    normal = Phony.normalize(phone, cc: '1')[0..10]
+    break if Phony.plausible?(normal)
+  end
+  normal
+end
