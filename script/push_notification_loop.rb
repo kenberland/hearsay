@@ -17,7 +17,7 @@ class PushNotificationLoop
   def run
     tag_push_manager = TagPushManager.new(push_client)
     if tag_push_manager.has_user_tag?
-      puts "attempting to notify about UserTag #{user_tag.id} #{user_tag.notification_state}"
+      puts "attempting to notify about UserTag #{tag_push_manager.user_tag.id} #{tag_push_manager.user_tag.notification_state}"
       tag_push_manager.notify
     else
       puts "no new UserTags"
