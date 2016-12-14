@@ -9,13 +9,8 @@ gem 'gcm'
 gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
 gem "jquery-slick-rails"
-gem 'koala'
 gem 'less-rails'
-gem 'linkedin'
 gem 'mysql2'
-gem 'omniauth'
-gem 'omniauth-facebook'
-gem 'omniauth-linkedin'
 gem "paranoia", "~> 2.2"
 gem 'phony_rails'
 gem 'rack-cors'
