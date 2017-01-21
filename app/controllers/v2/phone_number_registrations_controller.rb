@@ -31,7 +31,7 @@ class V2::PhoneNumberRegistrationsController < ApplicationController
     message = render_to_string :sms_message
 
     if ENV['ZANG_SID']
-      auth = { :username => ENV['ZANG_SID'], :password => '' }
+      auth = { :username => ENV['ZANG_SID'], :password => ENV['ZANG_PASSWORD'] }
       HTTParty.post("#{ZANG_URL}/#{ENV['ZANG_SID']}/SMS/Messages",
                     body: { To: destination,
                             From: ZANG_PHONENUMBER,
