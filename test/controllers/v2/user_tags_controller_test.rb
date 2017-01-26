@@ -109,7 +109,52 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
     end
   end
   test 'restore the soft-deleted tag when it is re-added' do
+    my_tag = random_tag
+    target_user = target_phone_number
+    reg = FactoryGirl.create(:phone_number_registration, :verified)
+    params = { 'currentUser' => reg.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_user),
+                             parameters = params
+                            )
+    params = { 'currentUser' => reg.device_uuid }
+    hearsay_xml_http_request(:delete,
+                             user_tag_url(target_user, my_tag),
+                             parameters = params
+                             )
+    assert_difference('UserTag.count', 1) do 
+     params = { 'currentUser' => reg.device_uuid, tag: { id: my_tag } }
+      hearsay_xml_http_request(:post,
+                       user_tags_url(target_phone_number),
+                               parameters = params
+                               )
+      assert_response 200
+    end
   end
-  test 'allow a user to delete tags that are on them' do
+  test 'allow a user to delete a tag on themself, deleting all the tags from all the users who put that shit there' do
+    my_tag = random_tag
+    my_target = target_phone_number
+    target_reg = FactoryGirl.create(:phone_number_registration, :verified, device_phone_number: my_target)
+
+    reg = FactoryGirl.create(:phone_number_registration, :verified)
+    params = { 'currentUser' => reg.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                       user_tags_url(my_target),
+                       parameters = params
+                      )
+    reg2 = FactoryGirl.create(:phone_number_registration, :verified)
+    params = { 'currentUser' => reg2.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(my_target),
+                             parameters = params
+                      )
+    assert_equal(UserTag.count, 2)
+    params = { 'currentUser' => target_reg.device_uuid }
+    assert_difference('UserTag.count', -2) do
+      hearsay_xml_http_request(:delete,
+                               user_tag_url(my_target, my_tag),
+                               parameters = params
+                              )
+    end
   end
 end

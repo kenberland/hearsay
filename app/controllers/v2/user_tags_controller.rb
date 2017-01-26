@@ -61,8 +61,8 @@ class V2::UserTagsController < ApplicationController
     from_user_uuid = params[:currentUser]
     to_user_uuid = Phony.normalize(params[:user_id], cc: '1')
 
-    if from_phone == to_user_uuid
-      return render(text: I18n.t('errors.self-tag-delete'), status: 400)
+    unless verified?
+      return render(text: I18n.t('errors.unverified-delete'), status: 400)
     end
 
     if params[:id] != 'null'
@@ -71,11 +71,18 @@ class V2::UserTagsController < ApplicationController
       tag_id = create_new_tag(params[:tag][:name], params[:tag][:category])
     end
 
-    user_tag = UserTag.where({
-      tag_id: tag_id,
-      from_user_uid: from_user_uuid,
-      to_user_uid: to_user_uuid
-    })
+    if from_phone == to_user_uuid
+      user_tag = UserTag.where({
+                                 tag_id: tag_id,
+                                 to_user_uid: to_user_uuid
+                               })
+    else
+      user_tag = UserTag.where({
+                                 tag_id: tag_id,
+                                 from_user_uid: from_user_uuid,
+                                 to_user_uid: to_user_uuid
+                               })
+    end
     user_tag.destroy_all
     render_index
   end
