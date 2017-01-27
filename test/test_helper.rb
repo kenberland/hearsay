@@ -27,3 +27,12 @@ def normalized_fake_number
   end
   normal
 end
+
+def target_phone_number
+  Faker::PhoneNumber.phone_number.gsub(/\D/,'')
+end
+
+def random_tag
+  Tag.all[rand*Tag.count].id
+end
+

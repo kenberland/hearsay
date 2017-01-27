@@ -91,7 +91,6 @@ class V2::UserTagsController < ApplicationController
 
   def render_index
     user_number = Phony.normalize(params[:user_id], cc: '1')
-    current_user = params[:currentUser]
 
     tag_counts = count user_number
     tag_categories = TagCategory.all.pluck(:id, :category).to_h

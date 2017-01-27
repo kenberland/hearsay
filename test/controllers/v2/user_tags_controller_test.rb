@@ -1,13 +1,5 @@
 require 'test_helper'
 
-def target_phone_number
-  Faker::PhoneNumber.phone_number.gsub(/\D/,'')
-end
-
-def random_tag
-  Tag.all[rand*Tag.count].id
-end
-
 class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
   test 'deny tag creation when user is not registered' do
     reg = FactoryGirl.build(:phone_number_registration)
