@@ -1,6 +1,18 @@
 class TagPushManager
 
-  attr_accessor :user_tag, :push_client, :device_uuid, :registration_id
+  IN_PROGRESS = 1
+  NOTIFIED = 2
+
+  TAGGED = 0
+  UNTAGGED = 1
+  REMOVED = 2
+
+  attr_accessor :user_tag,
+  :push_client,
+  :tagger_uuid,
+  :tagger_phone,
+  :tagee_phone,
+  :tagee_uuid
 
   def initialize(push_client)
     @user_tag = nil
@@ -9,9 +21,9 @@ class TagPushManager
   end
 
   def reserve
-    UserTag.transaction do
-      @user_tag = UserTag.unscoped.lock.limit(1).where(notification_state: nil).first
-      user_tag.update_attribute(:notification_state, :in_progress) if user_tag
+    Audited::Audit.transaction do
+      @user_tag = Audited::Audit.lock.limit(1).where(notification_state: nil).first
+      user_tag.update_attribute(:notification_state, IN_PROGRESS) if user_tag
     end
   end
 
@@ -20,32 +32,74 @@ class TagPushManager
   end
 
   def notify
-    if device_uuid && registration_id
-      Rails.logger.info("notify id: #{registration_id} for user at phone #{phone_number}".green)
-      push_client.push(registration_id)
-      user_tag.notification_state = :notified
-      user_tag.save!
-    else
-      Rails.logger.error "ERROR: device_uuid: #{device_uuid}".red
-      Rails.logger.error "ERORR: registration_id: #{registration_id}".red
-    end
+    push_client.push(recipient_push_id, message_for_hearsay_action)
+    user_tag.notification_state = NOTIFIED
+    user_tag.save!
   end
 
   private
 
-  def phone_number
-    user_tag.to_user_uid
+  def message_for_hearsay_action
+    case @message
+    when TAGGED
+      I18n.t('tag-messages.tagged')
+    when REMOVED
+      I18n.t('tag-messages.removed')
+    when UNTAGGED
+      I18n.t('tag-messages.untagged')
+    end
   end
 
-  def device_uuid
-    @device_uuid ||= PhoneNumberRegistration.order('created_at desc')
-                   .find_by_device_phone_number(phone_number)
-                   .try(:device_uuid)
+  def recipient_push_id
+    if action == 'create'
+      @message = TAGGED
+      push_id_for_uuid(uuid_for_phone(to_user_uid))
+    elsif action == 'destroy' and actor_uuid == uuid_for_phone(to_user_uid)
+      @message = REMOVED
+      push_id_for_uuid(from_user_uid)
+    else
+      @message = UNTAGGED
+      push_id_for_uuid(uuid_for_phone(to_user_uid))
+    end
   end
 
-  def registration_id
-    @registration_id ||= Registration.order('created_at desc')
-                       .find_by_device_uuid(device_uuid)
-                       .try(:registration_id)
+  def uuid_for_phone phone
+    PhoneNumberRegistration.order('created_at desc')
+      .find_by_device_phone_number(phone)
+      .try(:device_uuid)
+  end
+
+  def push_id_for_uuid uuid
+    Registration.order('created_at desc')
+      .find_by_device_uuid(uuid)
+      .try(:registration_id)
+  end
+
+  def log_error message
+    Rails.logger.error("ERROR: #{message}".red)
+  end
+
+  def log_info message
+    Rails.logger.error(message.green)
+  end
+
+  def actor_uuid
+    user_tag.username
+  end
+
+  def action
+    user_tag.action
+  end
+
+  def audited_changes
+    user_tag.audited_changes
+  end
+
+  def to_user_uid
+    audited_changes['to_user_uid']
+  end
+
+  def from_user_uid
+    audited_changes['from_user_uid']
   end
 end

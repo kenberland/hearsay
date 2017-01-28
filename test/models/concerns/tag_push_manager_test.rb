@@ -11,7 +11,8 @@ end
 
 class TagPushManagerTest < ActionDispatch::IntegrationTest
   test 'reserve returns false when no records are ready for notification' do
-    assert_difference("UserTag.where(notification_state: UserTag.notification_states['in_progress']).count", 0) do
+    selector = "Audited::Audit.where(notification_state: TagPushManager::IN_PROGRESS).count"
+    assert_difference(selector, 0) do
       assert_equal(nil, TagPushManager.new(MiniTest::Mock.new).user_tag)
     end
   end
@@ -25,7 +26,10 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
                              parameters = params
                             )
     push_client = MiniTest::Mock.new
-    push_client.expect(:push, true, [target_push_registration.registration_id])
+    push_client.expect(:push, true, [
+                                     target_push_registration.registration_id,
+                                     I18n.t('tag-messages.tagged')
+                                    ])
     tag_push_manager = TagPushManager.new(push_client)
     tag_push_manager.notify
     push_client.verify
@@ -37,8 +41,8 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
                              user_tags_url(target_phone_number),
                              parameters = params
                             )
-    assert_difference("UserTag.where(notification_state: UserTag.notification_states['in_progress']).count", 1) do
-      assert_equal(UserTag, TagPushManager.new(MiniTest::Mock.new).user_tag.class)
+    assert_difference("Audited::Audit.where(notification_state: TagPushManager::IN_PROGRESS).count", 1) do
+      assert_equal(Audited::Audit, TagPushManager.new(MiniTest::Mock.new).user_tag.class)
     end
   end
   test 'after tag addition, notification, and then deletion, reserve return a record to notify' do
@@ -51,14 +55,14 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
                              parameters = params
                             )
     user_tag = TagPushManager.new(MiniTest::Mock.new).user_tag
-    user_tag.update_attribute(:notification_state, :notified)
+    user_tag.update_attribute(:notification_state, TagPushManager::NOTIFIED)
     params = { 'currentUser' => reg.device_uuid }
     hearsay_xml_http_request(:delete,
                              user_tag_url(target_user, my_tag),
                              parameters = params
                             )
-    assert_difference("UserTag.unscoped.where(notification_state: UserTag.notification_states['in_progress']).count", 1) do
-      assert_equal(UserTag, TagPushManager.new(MiniTest::Mock.new).user_tag.class)
+    assert_difference("Audited::Audit.where(notification_state: TagPushManager::IN_PROGRESS).count", 1) do
+      assert_equal(Audited::Audit, TagPushManager.new(MiniTest::Mock.new).user_tag.class)
     end
   end
   test 'after tag addition, notification, and then deletion, a push is sent' do
@@ -71,15 +75,47 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
                              user_tags_url(target_phone_number),
                              parameters = params
                             )
-    user_tag = TagPushManager.new(MiniTest::Mock.new).user_tag
-    user_tag.update_attribute(:notification_state, :notified)
+    push_client = MiniTest::Mock.new
+    user_tag = TagPushManager.new(push_client).user_tag
+    user_tag.update_attribute(:notification_state, TagPushManager::NOTIFIED)
     params = { 'currentUser' => tagger.device_uuid }
     hearsay_xml_http_request(:delete,
                              user_tag_url(target_phone_number, my_tag),
                              parameters = params
                             )
     push_client = MiniTest::Mock.new
-    push_client.expect(:push, true, [target_push_registration.registration_id])
+    push_client.expect(:push, true, [
+                                     target_push_registration.registration_id,
+                                     I18n.t('tag-messages.untagged')
+                                    ])
+    tag_push_manager = TagPushManager.new(push_client)
+    tag_push_manager.notify
+    push_client.verify
+  end
+  test 'sends your tag has been removed' do
+    tagger = FactoryGirl.create(:phone_number_registration, :verified)
+    target = FactoryGirl.create(:phone_number_registration, :verified, device_phone_number: target_phone_number)
+    tagger_push_registration = FactoryGirl.create(:registration, :android, device_uuid: tagger.device_uuid)
+    target_push_registration = FactoryGirl.create(:registration, :ios, device_uuid: target.device_uuid)
+    my_tag = random_tag
+    params = { 'currentUser' => tagger.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_phone_number),
+                             parameters = params
+                            )
+    push_client = MiniTest::Mock.new
+    user_tag = TagPushManager.new(push_client).user_tag
+    user_tag.update_attribute(:notification_state, TagPushManager::NOTIFIED)
+    params = { 'currentUser' => target.device_uuid }
+    hearsay_xml_http_request(:delete,
+                             user_tag_url(target_phone_number, my_tag),
+                             parameters = params
+                            )
+    push_client = MiniTest::Mock.new
+    push_client.expect(:push, true, [
+                                     tagger_push_registration.registration_id,
+                                     I18n.t('tag-messages.removed')
+                                    ])
     tag_push_manager = TagPushManager.new(push_client)
     tag_push_manager.notify
     push_client.verify

@@ -42,11 +42,11 @@ class V2::UserTagsController < ApplicationController
                                })
 
     attributes = new_user_tag.attributes
-    attributes = attributes.except(*%w(created_at updated_at deleted_at id notification_state))
+    attributes = attributes.except(*%w(created_at updated_at deleted_at id))
     deleted_records = UserTag.unscoped.where(attributes)
 
     if (deleted_records.count > 0)
-      deleted_records.first.update_attributes(deleted_at: nil, notification_state: nil)
+      deleted_records.first.update_attributes(deleted_at: nil)
     else
       begin
         new_user_tag.save

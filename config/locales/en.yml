@@ -10,3 +10,7 @@ en:
     unverified: 'You cannot tag until you verify your device!'
     unverified-delete: 'You cannot delete a tag until you verify your device!'
     self-tag-delete: 'You cannot delete your own tag'
+  tag-messages:
+    tagged: "You've been tagged!"
+    removed: 'Your tag has been removed!'
+    untagged: "You've been un-tagged!"

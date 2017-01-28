@@ -1,7 +1,8 @@
 class PushClient
-  attr_accessor :gcm
+  attr_accessor :gcm, :message
 
-  def push(id)
+  def push(id, message)
+    @message = message
     self.send(method(id), id)
   end
 
@@ -15,7 +16,7 @@ class PushClient
     msg ||= {
       data: {
         title: { "locKey": "app_name" },
-        message: "You have been tagged!",
+        message: message,
         image: "www/img/logo.png",
         icon: "bubbles",
         iconColor: "blue"
@@ -27,7 +28,7 @@ class PushClient
 
   def send_ios(id)
     msg ||= {
-      :alert => "You've been tagged!",
+      :alert => message,
       :badge => 1,
       :sound => 'default',
     }
