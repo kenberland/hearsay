@@ -20,15 +20,19 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
     tagger = FactoryGirl.create(:phone_number_registration, :verified)
     target = FactoryGirl.create(:phone_number_registration, :verified, device_phone_number: target_phone_number)
     target_push_registration = FactoryGirl.create(:registration, :ios, device_uuid: target.device_uuid)
-    params = { 'currentUser' => tagger.device_uuid, tag: { id: random_tag } }
+    my_tag = random_tag
+    params = { 'currentUser' => tagger.device_uuid, tag: { id: my_tag } }
     hearsay_xml_http_request(:post,
                              user_tags_url(target_phone_number),
                              parameters = params
                             )
     push_client = MiniTest::Mock.new
+    push_message = PushMessage.new
+      .with_message(I18n.t('tag-messages.tagged'))
+      .with_tag(Tag.find(my_tag).tag)
     push_client.expect(:push, true, [
                                      target_push_registration.registration_id,
-                                     I18n.t('tag-messages.tagged')
+                                     push_message
                                     ])
     tag_push_manager = TagPushManager.new(push_client)
     tag_push_manager.notify
@@ -84,9 +88,12 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
                              parameters = params
                             )
     push_client = MiniTest::Mock.new
+    push_message = PushMessage.new
+      .with_message(I18n.t('tag-messages.untagged'))
+      .with_tag(Tag.find(my_tag).tag)
     push_client.expect(:push, true, [
                                      target_push_registration.registration_id,
-                                     I18n.t('tag-messages.untagged')
+                                     push_message
                                     ])
     tag_push_manager = TagPushManager.new(push_client)
     tag_push_manager.notify
@@ -112,9 +119,12 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
                              parameters = params
                             )
     push_client = MiniTest::Mock.new
+    push_message = PushMessage.new
+      .with_message(I18n.t('tag-messages.removed'))
+      .with_tag(Tag.find(my_tag).tag)
     push_client.expect(:push, true, [
                                      tagger_push_registration.registration_id,
-                                     I18n.t('tag-messages.removed')
+                                     push_message
                                     ])
     tag_push_manager = TagPushManager.new(push_client)
     tag_push_manager.notify

@@ -1,8 +1,8 @@
 class PushClient
-  attr_accessor :gcm, :message
+  attr_accessor :gcm, :push_message
 
-  def push(id, message)
-    @message = message
+  def push(id, push_message)
+    @push_message = push_message
     self.send(method(id), id)
   end
 
@@ -16,7 +16,8 @@ class PushClient
     msg ||= {
       data: {
         title: { "locKey": "app_name" },
-        message: message,
+        message: push_message.message,
+        tag: push_message.tag,
         image: "www/img/logo.png",
         icon: "bubbles",
         iconColor: "blue"
@@ -28,7 +29,8 @@ class PushClient
 
   def send_ios(id)
     msg ||= {
-      :alert => message,
+      :alert => push_message.message,
+      :tag => push_message.tag,
       :badge => 1,
       :sound => 'default',
     }

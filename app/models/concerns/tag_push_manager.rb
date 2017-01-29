@@ -18,14 +18,18 @@ class TagPushManager
     @user_tag = nil
     @push_client = push_client
     reserve
-    @push_message_type = get_put_message_type
   end
 
   def reserve
     Audited::Audit.transaction do
       @user_tag = Audited::Audit.lock.limit(1).where(notification_state: nil).first
-      user_tag.update_attribute(:notification_state, IN_PROGRESS) if user_tag
+      mark_as_in_progress if user_tag
     end
+  end
+
+  def mark_as_in_progress
+    user_tag.update_attribute(:notification_state, IN_PROGRESS)
+    @push_message_type = get_push_message_type
   end
 
   def has_user_tag?
@@ -33,7 +37,8 @@ class TagPushManager
   end
 
   def notify
-    push_client.push(recipient_push_id, message_for_hearsay_action)
+    push_message = PushMessage.new.with_message(message_for_hearsay_action).with_tag(tag)
+    push_client.push(recipient_push_id, push_message)
     user_tag.notification_state = NOTIFIED
     user_tag.save!
   end
@@ -115,5 +120,9 @@ class TagPushManager
 
   def from_user_uid
     audited_changes['from_user_uid']
+  end
+
+  def tag
+    UserTag.unscoped.find(user_tag.auditable_id).tag.tag
   end
 end
