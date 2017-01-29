@@ -18,6 +18,7 @@ class TagPushManager
     @user_tag = nil
     @push_client = push_client
     reserve
+    @push_message_type = get_put_message_type
   end
 
   def reserve
@@ -40,7 +41,7 @@ class TagPushManager
   private
 
   def message_for_hearsay_action
-    case @message
+    case @push_message_type
     when TAGGED
       I18n.t('tag-messages.tagged')
     when REMOVED
@@ -50,16 +51,25 @@ class TagPushManager
     end
   end
 
-  def recipient_push_id
+  def get_push_message_type
     if action == 'create'
-      @message = TAGGED
-      push_id_for_uuid(uuid_for_phone(to_user_uid))
-    elsif action == 'destroy' and actor_uuid == uuid_for_phone(to_user_uid)
-      @message = REMOVED
-      push_id_for_uuid(from_user_uid)
+      TAGGED
+    elsif action == 'destroy' and actor_uuid == to_user_uuid
+      REMOVED
     else
-      @message = UNTAGGED
-      push_id_for_uuid(uuid_for_phone(to_user_uid))
+      UNTAGGED
+    end
+  end
+
+
+  def recipient_push_id
+    case @push_message_type
+    when TAGGED
+      push_id_for_uuid(to_user_uuid)
+    when REMOVED
+      push_id_for_uuid(from_user_uid)
+    when UNTAGGED
+      push_id_for_uuid(to_user_uuid)
     end
   end
 
@@ -73,6 +83,10 @@ class TagPushManager
     Registration.order('created_at desc')
       .find_by_device_uuid(uuid)
       .try(:registration_id)
+  end
+
+  def to_user_uuid
+    uuid_for_phone(to_user_uid)
   end
 
   def log_error message
