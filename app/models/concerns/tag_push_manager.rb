@@ -37,7 +37,10 @@ class TagPushManager
   end
 
   def notify
-    push_message = PushMessage.new.with_message(message_for_hearsay_action).with_tag(tag)
+    push_message = PushMessage.new
+      .with_message(message_for_hearsay_action)
+      .with_tag(tag)
+      .with_seek_to_phone(to_user_uid)
     push_client.push(recipient_push_id, push_message)
     user_tag.notification_state = NOTIFIED
     user_tag.save!

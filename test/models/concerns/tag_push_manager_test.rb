@@ -30,6 +30,7 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
     push_message = PushMessage.new
       .with_message(I18n.t('tag-messages.tagged'))
       .with_tag(Tag.find(my_tag).tag)
+      .with_seek_to_phone(target_phone_number)
     push_client.expect(:push, true, [
                                      target_push_registration.registration_id,
                                      push_message
@@ -91,6 +92,7 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
     push_message = PushMessage.new
       .with_message(I18n.t('tag-messages.untagged'))
       .with_tag(Tag.find(my_tag).tag)
+      .with_seek_to_phone(target_phone_number)
     push_client.expect(:push, true, [
                                      target_push_registration.registration_id,
                                      push_message
@@ -122,6 +124,7 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
     push_message = PushMessage.new
       .with_message(I18n.t('tag-messages.removed'))
       .with_tag(Tag.find(my_tag).tag)
+      .with_seek_to_phone(target_phone_number)
     push_client.expect(:push, true, [
                                      tagger_push_registration.registration_id,
                                      push_message
