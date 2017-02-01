@@ -1,5 +1,5 @@
 class PushMessage
-  attr_accessor :message, :tag, :seek_to_phone
+  attr_accessor :message, :tag, :tag_category, :seek_to_phone
 
   def with_message message
     @message = message
@@ -9,9 +9,20 @@ class PushMessage
     @tag = tag
     self
   end
+  def with_tag_category tag_category
+    @tag_category = tag_category
+    self
+  end
   def with_seek_to_phone phone
     @seek_to_phone = phone
     self
+  end
+  def to_h
+    {
+      tag: tag,
+      tag_category: tag_category,
+      phone: seek_to_phone
+    }
   end
   def ==(another_push_message)
     self.message == another_push_message.message and

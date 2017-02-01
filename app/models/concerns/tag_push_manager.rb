@@ -39,7 +39,8 @@ class TagPushManager
   def notify
     push_message = PushMessage.new
       .with_message(message_for_hearsay_action)
-      .with_tag(tag)
+      .with_tag(tag.tag)
+      .with_tag_category(tag.tag_category.category)
       .with_seek_to_phone(to_user_uid)
     push_client.push(recipient_push_id, push_message)
     user_tag.notification_state = NOTIFIED
@@ -122,6 +123,6 @@ class TagPushManager
   end
 
   def tag
-    UserTag.unscoped.find(user_tag.auditable_id).tag.tag
+    UserTag.unscoped.find(user_tag.auditable_id).tag
   end
 end
