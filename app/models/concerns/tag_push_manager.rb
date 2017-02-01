@@ -2,6 +2,7 @@ class TagPushManager
 
   IN_PROGRESS = 1
   NOTIFIED = 2
+  UNNOTIFIABLE = 3
 
   TAGGED = 0
   UNTAGGED = 1
@@ -42,8 +43,12 @@ class TagPushManager
       .with_tag(tag.tag)
       .with_tag_category(tag.tag_category.category)
       .with_seek_to_phone(to_user_uid)
-    push_client.push(recipient_push_id, push_message)
-    user_tag.notification_state = NOTIFIED
+    if recipient_push_id
+      push_client.push(recipient_push_id, push_message)
+      user_tag.notification_state = NOTIFIED
+    else
+      user_tag.notification_state = UNNOTIFIABLE
+    end
     user_tag.save!
   end
 

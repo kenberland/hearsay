@@ -173,4 +173,38 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
     tag_push_manager.notify
     push_client.verify
   end
+  test "Don't blow up when the phone number is not registered" do
+    tagger = FactoryGirl.create(:phone_number_registration, :verified)
+    target_phone = '1646' # BOGUS
+    my_tag = random_tag
+    params = { 'currentUser' => tagger.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_phone_number),
+                             parameters = params
+                            )
+    push_client = PushClient.new
+    tag_push_manager = TagPushManager.new(push_client)
+    tag_push_manager.notify
+    assert_equal(tag_push_manager.user_tag.notification_state,
+                 TagPushManager::UNNOTIFIABLE)
+  end
+  test "Don't blow up when the device doesn't have a push id" do
+    tagger = FactoryGirl.create(:phone_number_registration, :verified)
+    target = FactoryGirl.create(:phone_number_registration, :verified,
+                                device_phone_number: target_phone_number)
+    tagger_push_registration = FactoryGirl
+                               .create(:registration, :android,
+                                       device_uuid: tagger.device_uuid)
+    my_tag = random_tag
+    params = { 'currentUser' => tagger.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_phone_number),
+                             parameters = params
+                            )
+    push_client = PushClient.new
+    tag_push_manager = TagPushManager.new(push_client)
+    tag_push_manager.notify
+    assert_equal(tag_push_manager.user_tag.notification_state,
+                 TagPushManager::UNNOTIFIABLE)
+  end
 end
