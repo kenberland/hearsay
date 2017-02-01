@@ -20,7 +20,7 @@ class PushClient
         data: {
           tag: push_message.tag,
           phone: push_message.seek_to_phone
-        }
+        },
         image: "www/img/logo.png",
         icon: "bubbles",
         iconColor: "blue"
