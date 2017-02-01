@@ -17,7 +17,10 @@ class PushClient
       data: {
         title: { "locKey": "app_name" },
         message: push_message.message,
-        tag: push_message.tag,
+        data: {
+          tag: push_message.tag,
+          phone: push_message.seek_to_phone
+        }
         image: "www/img/logo.png",
         icon: "bubbles",
         iconColor: "blue"
