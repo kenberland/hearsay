@@ -133,4 +133,44 @@ class TagPushManagerTest < ActionDispatch::IntegrationTest
     tag_push_manager.notify
     push_client.verify
   end
+  test 'Tag war. After tag addition, deletion, and re-addition, a push is sent' do
+    tagger = FactoryGirl.create(:phone_number_registration, :verified)
+    target = FactoryGirl.create(:phone_number_registration, :verified, device_phone_number: target_phone_number)
+    target_push_registration = FactoryGirl.create(:registration, :ios, device_uuid: target.device_uuid)
+    my_tag = random_tag
+    params = { 'currentUser' => tagger.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_phone_number),
+                             parameters = params
+                            )
+    push_client = MiniTest::Mock.new
+    user_tag = TagPushManager.new(push_client).user_tag
+    user_tag.update_attribute(:notification_state, TagPushManager::NOTIFIED)
+    params = { 'currentUser' => tagger.device_uuid }
+    hearsay_xml_http_request(:delete,
+                             user_tag_url(target_phone_number, my_tag),
+                             parameters = params
+                            )
+    push_client = MiniTest::Mock.new
+    user_tag = TagPushManager.new(push_client).user_tag
+    user_tag.update_attribute(:notification_state, TagPushManager::NOTIFIED)
+
+    params = { 'currentUser' => tagger.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_phone_number),
+                             parameters = params
+                            )
+    push_client = MiniTest::Mock.new
+    push_message = PushMessage.new
+      .with_message(I18n.t('tag-messages.tagged'))
+      .with_tag(Tag.find(my_tag).tag)
+      .with_seek_to_phone(target_phone_number)
+    push_client.expect(:push, true, [
+                                     target_push_registration.registration_id,
+                                     push_message
+                                    ])
+    tag_push_manager = TagPushManager.new(push_client)
+    tag_push_manager.notify
+    push_client.verify
+  end
 end

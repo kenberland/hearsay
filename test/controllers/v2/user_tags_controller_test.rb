@@ -114,10 +114,10 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                              user_tag_url(target_user, my_tag),
                              parameters = params
                              )
-    assert_difference('UserTag.count', 1) do 
+    assert_difference('UserTag.unscoped.count', 0) do
      params = { 'currentUser' => reg.device_uuid, tag: { id: my_tag } }
       hearsay_xml_http_request(:post,
-                       user_tags_url(target_phone_number),
+                       user_tags_url(target_user),
                                parameters = params
                                )
       assert_response 200

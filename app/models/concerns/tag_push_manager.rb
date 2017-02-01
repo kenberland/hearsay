@@ -60,7 +60,7 @@ class TagPushManager
   end
 
   def get_push_message_type
-    if action == 'create'
+    if action == 'create' or action == 'update'
       TAGGED
     elsif action == 'destroy' and actor_uuid == to_user_uuid
       REMOVED
@@ -113,16 +113,12 @@ class TagPushManager
     user_tag.action
   end
 
-  def audited_changes
-    user_tag.audited_changes
-  end
-
   def to_user_uid
-    audited_changes['to_user_uid']
+    UserTag.unscoped.find(user_tag.auditable_id).to_user_uid
   end
 
   def from_user_uid
-    audited_changes['from_user_uid']
+    UserTag.unscoped.find(user_tag.auditable_id).from_user_uid
   end
 
   def tag
