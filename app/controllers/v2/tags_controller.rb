@@ -6,7 +6,11 @@ class V2::TagsController < ApplicationController
     tag_array = tags.each_with_object([]) do |(key, value), return_array|
       return_array << {
         category: key,
-        tags: value.map{|tag| { tag[1] => tag[0] } }
+        tags: value.map{|tag| {
+                          id: tag[1],
+                          tag: tag[0]
+                        }
+        }
       }
     end
 
