@@ -149,4 +149,32 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                               )
     end
   end
+  test 'the tag cloud is returned for a user with tags' do
+    my_tag = random_tag
+    target_user = target_phone_number
+    reg = FactoryGirl.create(:phone_number_registration, :verified)
+    params = { 'currentUser' => reg.device_uuid, tag: { id: my_tag } }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_user),
+                             parameters = params
+                            )
+    assert_equal(1, JSON.parse(response.body)["tags"].size)
+  end
+  test 'exactly one new tag is returned when the tag is newly created' do
+    tag_category = random_tag_category
+    target_user = target_phone_number
+    my_tag = Faker::StarWars.character
+    reg = FactoryGirl.create(:phone_number_registration, :verified)
+    params = { 'currentUser' => reg.device_uuid, tag: {
+                 newTag: my_tag,
+                 category: random_tag_category
+               }
+             }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_user),
+                             parameters = params
+                            )
+    assert_equal(Hash, JSON.parse(response.body)["new_tag"].class)
+    assert_equal(Tag.last.id, JSON.parse(response.body)["new_tag"]["id"])
+  end
 end

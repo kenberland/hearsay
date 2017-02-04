@@ -54,7 +54,7 @@ class V2::UserTagsController < ApplicationController
         Rails.logger.error e
       end
     end
-    render_index
+    render_index(params[:tag][:newTag] ? new_tag : nil)
   end
 
   def destroy
@@ -89,7 +89,7 @@ class V2::UserTagsController < ApplicationController
 
   private
 
-  def render_index
+  def render_index(new_tag = nil)
     user_number = Phony.normalize(params[:user_id], cc: '1')
 
     tag_counts = count user_number
@@ -114,7 +114,7 @@ class V2::UserTagsController < ApplicationController
         tagId: key
       }
     end
-    render json: user_cloud
+    render json: { tags: user_cloud, new_tag: new_tag }
   end
 
   def current_tag(current_tag_info)

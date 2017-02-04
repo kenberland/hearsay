@@ -1,7 +1,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
-require 'support/factory_girl'
+require File.expand_path('test/support/factory_girl')
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   # fixtures :all
@@ -36,3 +36,10 @@ def random_tag
   Tag.all[rand*Tag.count].id
 end
 
+def random_tag_category
+  TagCategory.all[rand*TagCategory.count].category
+end
+
+def random_tag_category_obj
+  TagCategory.all[rand*TagCategory.count]
+end
