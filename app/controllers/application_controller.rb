@@ -9,6 +9,11 @@ class ApplicationController < ActionController::Base
     params[:currentUser]
   end
 
+  def current_phone
+    @current_phone ||= PhoneNumberRegistration.find_by(
+      device_uuid: params[:currentUser]).try(:device_phone_number)
+  end
+
   def status
     render json: {status: 'OK'}.merge(ActiveRecord::Base.connection.execute('SELECT "now", now()').to_h)
   end

@@ -94,17 +94,18 @@ class V2::UserTagsController < ApplicationController
 
     tag_counts = count user_number
     tag_categories = TagCategory.all.pluck(:id, :category).to_h
-
     tags_hash = tag_counts.keys.each_with_object({}) do |tag, return_hash|
       current_tag = return_hash[tag.last]
       count = current_tag.nil? ? 1 : current_tag[:count] += 1
-      is_current_user = (tag[1] == current_user || current_tag.try(:[], :is_current_user))
+      is_current_user = (tag[1] == current_user ||
+                         tag[0] == current_phone ||
+                         current_tag.try(:[], :is_current_user))
 
       return_hash[tag.last] = {count: count, is_current_user: is_current_user}
     end
 
     user_cloud = tags_hash.each_with_object([]) do |(key, value), return_array|
-      is_current_user = value[:is_current_user] == nil ? false : true
+      is_current_user = !!value[:is_current_user]
       tag = current_tag(key)
       return_array << {
         category: tag_category(tag_categories, tag),
