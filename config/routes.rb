@@ -35,5 +35,8 @@ Rails.application.routes.draw do
     post '/registrations/:device_uuid', to: 'registrations#create'
     post '/phone_number_registrations/:device_uuid', to: 'phone_number_registrations#create'
   end
+  api_version(module: 'V3', header: {name: 'API-VERSION', value: '3'}) do
+    post '/user_tags', to: 'user_tags#index', as: 'v3_user_tags'
+  end
   resources :marketing, only: [:index]
 end

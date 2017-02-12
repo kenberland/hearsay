@@ -9,8 +9,8 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
 end
 
-def hearsay_xml_http_request(method, path, parameters)
-  headers = { 'API-VERSION' => 2 }
+def hearsay_xml_http_request(method, path, parameters, version='2')
+  headers = { 'API-VERSION' => version }
   xml_http_request(method, path, parameters,
                    headers_or_env = headers
                   )
