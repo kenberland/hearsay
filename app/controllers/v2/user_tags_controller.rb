@@ -35,6 +35,10 @@ class V2::UserTagsController < ApplicationController
       new_tag = create_new_tag(params[:tag][:newTag], params[:tag][:category])
     end
 
+    unless new_tag.errors.empty?
+      return render(text: new_tag.errors.full_messages.join(''), status: 400)
+    end
+
     new_user_tag = UserTag.new({
                                  from_user_uid: from_user_uuid,
                                  to_user_uid: to_user_uuid,

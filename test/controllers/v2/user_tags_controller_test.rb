@@ -160,6 +160,40 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                             )
     assert_equal(1, JSON.parse(response.body)["tags"].size)
   end
+  test 'tags must be at least two characters' do
+    tag_category = random_tag_category
+    target_user = target_phone_number
+    my_tag = '1'
+    reg = FactoryGirl.create(:phone_number_registration, :verified)
+    params = { 'currentUser' => reg.device_uuid, tag: {
+                 newTag: my_tag,
+                 category: random_tag_category
+               }
+             }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_user),
+                             parameters = params
+                            )
+    assert_response 400
+    assert_equal('Tag is too short (minimum is 2 characters)', response.body)
+  end
+  test 'tags may be no more than 24 characters' do
+    tag_category = random_tag_category
+    target_user = target_phone_number
+    my_tag = 'X' * 25
+    reg = FactoryGirl.create(:phone_number_registration, :verified)
+    params = { 'currentUser' => reg.device_uuid, tag: {
+                 newTag: my_tag,
+                 category: random_tag_category
+               }
+             }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_user),
+                             parameters = params
+                            )
+    assert_response 400
+    assert_equal('Tag is too long (maximum is 24 characters)', response.body)
+  end
   test 'exactly one new tag is returned when the tag is newly created' do
     tag_category = random_tag_category
     target_user = target_phone_number
