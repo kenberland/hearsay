@@ -28,6 +28,16 @@ def normalized_fake_number
   normal
 end
 
+def chitchatize_number number
+  number.gsub(/\D+/, '')
+end
+
+def create_tag_mock_post tag, from, to
+  UserTag.create tag_id: tag.id,
+                 from_user_uid: from.device_uuid,
+                 to_user_uid: to.device_phone_number
+end
+
 def target_phone_number
   Faker::PhoneNumber.phone_number.gsub(/\D/,'')
 end

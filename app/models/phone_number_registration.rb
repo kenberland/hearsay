@@ -1,6 +1,6 @@
 class PhoneNumberRegistration < ActiveRecord::Base
     enum verification_state: [:unverified, :verified]
-    validate :device_phone_number_plausible, on: :create
+#    validate :device_phone_number_plausible, on: :create
     before_create :create_verification_code
 
     def device_phone_number_plausible

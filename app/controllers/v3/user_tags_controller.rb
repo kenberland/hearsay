@@ -10,9 +10,7 @@ tags.id as tag_id, tag_categories.category,
 (to_user_uid = '#{from_phone}'
 || from_user_uid ='#{from_device_uuid}') as `can_delete`
 EOD
-
-    users = normalize_users(params['tagsForUsers'])
-    r = UserTag.where(to_user_uid: users)
+    r = UserTag.where(to_user_uid: user_lut.keys)
       .joins(tag: :tag_category)
       .select(select_sql)
       .collect{|r| { to_user_uid: r.to_user_uid, tag_id: r.tag_id,
@@ -20,7 +18,7 @@ EOD
                      is_current_user: r.can_delete == 1 } }
 
     r = r.each_with_object({}) do |v, h|
-      target = v[:to_user_uid]
+      target = user_lut[v[:to_user_uid]]
       unless h.has_key?(target)
         h[target] = { tags: {} }
       end
@@ -36,15 +34,27 @@ EOD
         tag_hash[tag_id] = v
       end
     end
+    r = template_hash.merge(r)
     render json: r
   end
 
   private
 
-  def normalize_users users
-    users.collect{ |u|
-      Phony.normalize(u, cc: '1')
-    }
+  def users
+    params['tagsForUsers']
+  end
+
+  def template_hash
+    Hash[users.zip].each_with_object({}) do |(k,v), o|
+      o[k] = {tags: [] }
+    end
+  end
+
+  def user_lut
+    @memo_user_lut ||= Hash[users.zip]
+      .each_with_object({}) do |(k,v),o|
+      o[Phony.normalize(k, cc: '1')] = k
+    end
   end
 
   def registration
