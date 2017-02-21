@@ -31,6 +31,26 @@ class V3::UserTagsControllerTest < ActionDispatch::IntegrationTest
     create_tag_mock_post(@tag_3, @user_1, @user_2)
   end
 
+  test 'send registered:true if the user is registered' do
+    setup_scenario
+    unregistered_user = normalized_fake_number
+    verified_user = FactoryGirl.create(
+      :phone_number_registration, :verified)
+    @tag_1 = Tag.all[0]
+    params = { currentUser: @user_1.device_uuid,
+               tagsForUsers: [unregistered_user,
+                              verified_user.device_phone_number,
+                              @user_2.device_phone_number] }
+    hearsay_xml_http_request(:post,
+                             v3_user_tags_url,
+                             parameters = params,
+                             '3'
+                            )
+    r = JSON.parse(response.body)
+    assert_equal(true,
+                 r[verified_user.device_phone_number]['registered'])
+  end
+
   test 'user_1 can delete the tag she put on user_2' do
     setup_scenario
     params = { currentUser: @user_1.device_uuid,

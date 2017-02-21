@@ -35,6 +35,7 @@ EOD
       end
     end
     r = template_hash.merge(r)
+    r = r.deep_merge(registered_phones)
     render json: r
   end
 
@@ -69,4 +70,13 @@ EOD
     registration.try(:device_uuid)
   end
 
+  def registered_phones
+    PhoneNumberRegistration
+      .select(:device_phone_number, :verification_state)
+      .where(device_phone_number: user_lut.keys)
+      .each_with_object({}) do |e, o|
+      thing = { registered: e.verification_state == 'verified' }
+      o[e.device_phone_number] = thing
+    end
+  end
 end
