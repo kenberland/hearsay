@@ -30,7 +30,7 @@ class PushClient
   def send_ios(id)
     msg ||= {
       :alert => push_message.message,
-      :data => push_message.to_h,
+      :other => { :data => push_message.to_h },
       :badge => 1,
       :sound => 'default',
     }
