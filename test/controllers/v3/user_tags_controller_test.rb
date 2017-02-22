@@ -36,7 +36,6 @@ class V3::UserTagsControllerTest < ActionDispatch::IntegrationTest
     unregistered_user = normalized_fake_number
     verified_user = FactoryGirl.create(
       :phone_number_registration, :verified)
-    @tag_1 = Tag.all[0]
     params = { currentUser: @user_1.device_uuid,
                tagsForUsers: [unregistered_user,
                               verified_user.device_phone_number,
@@ -49,6 +48,27 @@ class V3::UserTagsControllerTest < ActionDispatch::IntegrationTest
     r = JSON.parse(response.body)
     assert_equal(true,
                  r[verified_user.device_phone_number]['registered'])
+  end
+
+  test 'registration hash has the phone number the client sent, not the normalized one' do
+    setup_scenario
+    phone_number = '(310) 373-7981'
+    chitchatized_number = chitchatize_number(phone_number)
+    normalized_number = Phony.normalize(phone_number, cc: '1')
+    verified_user = FactoryGirl.create(:phone_number_registration,
+                                        :verified,
+                                        device_phone_number: normalized_number)
+    params = { currentUser: @user_1.device_uuid,
+               tagsForUsers: [chitchatized_number,
+                              @user_2.device_phone_number]
+             }
+    hearsay_xml_http_request(:post,
+                             v3_user_tags_url,
+                             parameters = params,
+                             '3'
+                            )
+    r = JSON.parse(response.body)
+    assert_equal(true, r[chitchatized_number]['registered'])
   end
 
   test 'user_1 can delete the tag she put on user_2' do

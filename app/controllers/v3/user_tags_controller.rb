@@ -76,7 +76,7 @@ EOD
       .where(device_phone_number: user_lut.keys)
       .each_with_object({}) do |e, o|
       thing = { registered: e.verification_state == 'verified' }
-      o[e.device_phone_number] = thing
+      o[user_lut[e.device_phone_number]] = thing
     end
   end
 end
