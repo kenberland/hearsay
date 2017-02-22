@@ -119,7 +119,18 @@ class V2::UserTagsController < ApplicationController
         tagId: key
       }
     end
-    render json: { tags: user_cloud, new_tag: new_tag }
+    render json: { tags: user_cloud,
+                   new_tag: new_tag,
+                   registered: is_registered(user_number)
+                 }
+  end
+
+  def is_registered(user_number)
+    PhoneNumberRegistration
+      .select(:verification_state)
+      .where(device_phone_number: user_number)
+      .first
+      .try(:verification_state) == 'verified'
   end
 
   def current_tag(current_tag_info)
