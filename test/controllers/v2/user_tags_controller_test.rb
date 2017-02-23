@@ -13,7 +13,7 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
       assert_response 400
     end
   end
-  test 'deny tag creation when user is not veririfed' do
+  test 'deny tag creation when user is not verified' do
     reg = FactoryGirl.create(:phone_number_registration)
     params = { 'currentUser' => reg.device_uuid, tag: { id: random_tag } }
     assert_difference('UserTag.count', 0) do
@@ -40,6 +40,24 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('UserTag.count', 0) do
       reg = FactoryGirl.create(:phone_number_registration, :verified)
       params = { 'currentUser' => reg.device_uuid, tag: { id: random_tag } }
+      hearsay_xml_http_request(:post,
+                               user_tags_url(reg.device_phone_number),
+                               parameters = params
+                              )
+      assert_equal('You cannot tag yourself!', response.body)
+      assert_response 400
+    end
+  end
+  test 'disallow tagging yourself when creating a new tag' do
+    assert_difference('UserTag.count', 0) do
+      reg = FactoryGirl.create(:phone_number_registration, :verified)
+      params = {
+        'currentUser' => reg.device_uuid,
+        tag: {
+          newTag: "24k Magic",
+          category: "income"
+        }
+      }
       hearsay_xml_http_request(:post,
                                user_tags_url(reg.device_phone_number),
                                parameters = params
