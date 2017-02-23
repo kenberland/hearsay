@@ -35,6 +35,7 @@ EOD
       end
     end
     r = template_hash.merge(r)
+    r = r.deep_merge(empty_registered_hash)
     r = r.deep_merge(registered_phones)
     render json: r
   end
@@ -68,6 +69,15 @@ EOD
 
   def from_device_uuid
     registration.try(:device_uuid)
+  end
+
+  def empty_registered_hash
+    return @memo_empty_registered_hash if @memo_empty_registered_hash
+    h = {}
+    user_lut.values.each do |k|
+      h[k] = { registered: false }
+    end
+    @memo_empty_registered_hash = h
   end
 
   def registered_phones

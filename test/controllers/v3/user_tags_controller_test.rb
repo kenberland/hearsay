@@ -3,22 +3,26 @@ require 'pp'
 
 class V3::UserTagsControllerTest < ActionDispatch::IntegrationTest
   def setup_scenario
-    @n1 = Faker::PhoneNumber.phone_number
-    @n2 = Faker::PhoneNumber.phone_number
-    @n3 = Faker::PhoneNumber.phone_number
+    @n1 = plausible_fake_number
+    @n2 = plausible_fake_number
+    @n3 = plausible_fake_number
+
+    @n1_1 = Phony.normalize(
+      chitchatize_number(@n1), cc: '1')
+    @n2_1 = Phony.normalize(
+      chitchatize_number(@n2), cc: '1')
+    @n3_1 = Phony.normalize(
+      chitchatize_number(@n3), cc: '1')
 
     @user_1 = FactoryGirl.create(
       :phone_number_registration,
-      device_phone_number: Phony.normalize(
-        chitchatize_number(@n1), cc: '1'))
+      device_phone_number: @n1_1)
     @user_2 = FactoryGirl.create(
       :phone_number_registration,
-      device_phone_number: Phony.normalize(
-        chitchatize_number(@n2), cc: '1'))
+      device_phone_number: @n2_1)
     @current_user = FactoryGirl.create(
       :phone_number_registration,
-      device_phone_number: Phony.normalize(
-        chitchatize_number(@n3), cc: '1'))
+      device_phone_number: @n3_1)
     @tag_1 = Tag.all[0]
     @tag_2 = Tag.all[1]
     @tag_3 = Tag.all[2]
@@ -29,6 +33,52 @@ class V3::UserTagsControllerTest < ActionDispatch::IntegrationTest
     create_tag_mock_post(@tag_1, @current_user, @user_1)
     create_tag_mock_post(@tag_2, @user_2, @user_1)
     create_tag_mock_post(@tag_3, @user_1, @user_2)
+  end
+
+  test 'send registered:false if all the users are not registered' do
+    setup_scenario
+    unregistered_user1 = chitchatize_number plausible_fake_number
+    unregistered_user2 = chitchatize_number plausible_fake_number
+    params = { currentUser: @user_1.device_uuid,
+               tagsForUsers: [unregistered_user1,
+                              unregistered_user2
+                             ]
+             }
+    hearsay_xml_http_request(:post,
+                             v3_user_tags_url,
+                             parameters = params,
+                             '3'
+                            )
+    r = JSON.parse(response.body)
+    assert_equal( [false, false],
+                 [ r[unregistered_user1]['registered'],
+                   r[unregistered_user2]['registered']
+                 ])
+  end
+
+  test 'send the right registered if 2 users are not registered and one is' do
+    setup_scenario
+    unregistered_user1 = chitchatize_number plausible_fake_number
+    unregistered_user2 = chitchatize_number plausible_fake_number
+    verified_user = FactoryGirl.create(
+      :phone_number_registration, :verified)
+    params = { currentUser: @user_1.device_uuid,
+               tagsForUsers: [unregistered_user1,
+                              unregistered_user2,
+                              verified_user.device_phone_number
+                             ]
+             }
+    hearsay_xml_http_request(:post,
+                             v3_user_tags_url,
+                             parameters = params,
+                             '3'
+                            )
+    r = JSON.parse(response.body)
+    assert_equal( [false, false, true],
+                 [ r[unregistered_user1]['registered'],
+                   r[unregistered_user2]['registered'],
+                   r[verified_user.device_phone_number]['registered'],
+                 ])
   end
 
   test 'send registered:true if the user is registered' do
