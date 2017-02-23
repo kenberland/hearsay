@@ -215,6 +215,6 @@ class V3::UserTagsControllerTest < ActionDispatch::IntegrationTest
                             )
     assert_response 200
     r = JSON.parse(response.body)
-    assert_equal({'tags' => [] }, r[empty_number])
+    assert_equal({'tags' => [], 'registered' => false }, r[empty_number])
   end
 end
