@@ -19,11 +19,11 @@ class V2::UserTagsController < ApplicationController
 
   def create
     unless verified?
-      return render(text: I18n.t('errors.unverified'), status: 400)
+      return render(json: { error: I18n.t('errors.unverified') }, status: 400)
     end
 
     if from_phone == Phony.normalize(params[:user_id], cc: '1')
-      return render(text: I18n.t('errors.self-tagging'), status: 400)
+      return render(json: { error: I18n.t('errors.self-tagging') }, status: 400)
     end
 
     to_user_uuid = Phony.normalize(params[:user_id], cc: '1')
@@ -36,7 +36,7 @@ class V2::UserTagsController < ApplicationController
     end
 
     unless new_tag.errors.empty?
-      return render(text: new_tag.errors.full_messages.join(''), status: 400)
+      return render(json: { error: new_tag.errors.full_messages.join('') }, status: 400)
     end
 
     new_user_tag = UserTag.new({
@@ -66,7 +66,7 @@ class V2::UserTagsController < ApplicationController
     to_user_uuid = Phony.normalize(params[:user_id], cc: '1')
 
     unless verified?
-      return render(text: I18n.t('errors.unverified-delete'), status: 400)
+      return render(json: { error:I18n.t('errors.unverified-delete') }, status: 400)
     end
 
     if params[:id] != 'null'

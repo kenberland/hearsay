@@ -9,7 +9,8 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                                user_tags_url(target_phone_number),
                                parameters = params
                               )
-      assert_equal('You cannot tag until you verify your device!', response.body)
+      assert_equal('You cannot tag until you verify your device!',
+                   JSON.parse(response.body)['error'])
       assert_response 400
     end
   end
@@ -21,7 +22,8 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                                user_tags_url(target_phone_number),
                                parameters = params
                               )
-      assert_equal('You cannot tag until you verify your device!', response.body)
+      assert_equal('You cannot tag until you verify your device!',
+                   JSON.parse(response.body)['error'])
       assert_response 400
     end
   end
@@ -44,7 +46,8 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                                user_tags_url(reg.device_phone_number),
                                parameters = params
                               )
-      assert_equal('You cannot tag yourself!', response.body)
+      assert_equal('You cannot tag yourself!',
+                   JSON.parse(response.body)['error'])
       assert_response 400
     end
   end
@@ -62,7 +65,8 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                                user_tags_url(reg.device_phone_number),
                                parameters = params
                               )
-      assert_equal('You cannot tag yourself!', response.body)
+      assert_equal('You cannot tag yourself!',
+                   JSON.parse(response.body)['error'])
       assert_response 400
     end
   end
@@ -193,7 +197,8 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                              parameters = params
                             )
     assert_response 400
-    assert_equal('Tag is too short (minimum is 2 characters)', response.body)
+    assert_equal('Tag is too short (minimum is 2 characters)',
+                 JSON.parse(response.body)['error'])
   end
   test 'tags may be no more than 24 characters' do
     tag_category = random_tag_category
@@ -210,7 +215,8 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
                              parameters = params
                             )
     assert_response 400
-    assert_equal('Tag is too long (maximum is 24 characters)', response.body)
+    assert_equal('Tag is too long (maximum is 24 characters)',
+                 JSON.parse(response.body)['error'])
   end
   test 'exactly one new tag is returned when the tag is newly created' do
     tag_category = random_tag_category
