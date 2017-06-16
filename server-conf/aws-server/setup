@@ -6,7 +6,7 @@ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB8
 source /home/ubuntu/.rvm/scripts/rvm
 rvm install ruby-2.3.0
 
-hostname hearsay.hero.com
+hostname hearsay.hero.net
 
 dd if=/dev/zero of=/var/tmp/cryptofs bs=1024 count=10240
 losetup /dev/loop0 /var/tmp/cryptofs 

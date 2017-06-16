@@ -2,7 +2,7 @@
 lock '3.4.0'
 
 set :application, 'hearsay'
-set :repo_url, 'git@hero.com:hearsay.git'
+set :repo_url, 'git@hero.net:hearsay.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
