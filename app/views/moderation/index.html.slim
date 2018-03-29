@@ -1,0 +1,16 @@
+div
+  h1
+    'Tags awaiting moderation
+div
+  table
+    tr
+      th
+        'Tag
+      th
+        'Action
+    - @tags.each do |tag|
+      tr
+        td
+          = "#{tag.tag}"
+          td
+            = tag.moderation_text

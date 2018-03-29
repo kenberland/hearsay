@@ -5,6 +5,6 @@ class TagTest < ActiveSupport::TestCase
     tc = TagCategory.all[rand*TagCategory.count]
     tag = Tag.find_or_create_by({ tag: Faker::StarWars.character,
                             tag_category: tc }) rescue ActiveRecord::RecordNotUnique
-    assert_equal(tag.isUnmoderated, true)
+    assert_equal(tag.is_unmoderated, true)
   end
 end
