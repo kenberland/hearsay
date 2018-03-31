@@ -29,4 +29,13 @@ class Tag < ActiveRecord::Base
       'rejected'
     end
   end
+
+  def self.convert_moderation_intent intent
+    case intent
+    when 'approve'
+      APPROVED
+    else
+      REJECTED
+    end
+  end
 end

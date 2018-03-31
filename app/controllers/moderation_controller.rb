@@ -7,6 +7,11 @@ class ModerationController < ApplicationController
   end
 
   def update
+    result = Tag.update(params[:tag][:id], {
+                          moderation_state: Tag.convert_moderation_intent(
+                            params[:moderation_action])
+                        })
+    redirect_to :back, flash: { notice: result }
   end
 
   def is_admin
@@ -14,6 +19,6 @@ class ModerationController < ApplicationController
       ( ENV['HEARSAY_SECRET'] and
       request.headers["Hearsay-Secret"] and
         request.headers["Hearsay-Secret"] == ENV['HEARSAY_SECRET'] ) or
-     ['test'].include?(Rails.env)
+     ['test', 'development'].include?(Rails.env)
   end
 end

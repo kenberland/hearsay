@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get  '/status', to: 'application#status'
   get  '/moderate', to: 'moderation#index'
-  post '/moderate/:tag_id', to: 'moderation#update'
+  post '/moderate', to: 'moderation#update'
   api_version(module: 'V1', header: {name: 'API-VERSION', value: '1'}, default: true) do
     root to: 'unauthenticated#index'
     get '/privacy', to: 'unauthenticated#privacy'

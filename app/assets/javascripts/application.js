@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require turbolinks
-//= require facebook_sdk
+//= require moderation
 //= require toastr.min
 
 toastr.options = {

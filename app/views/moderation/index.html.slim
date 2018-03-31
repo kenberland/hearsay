@@ -9,7 +9,7 @@ div
       th
       th
     - @tags.each do |tag|
-      tr
+      tr data-tag-id="#{tag.id}"
         td
           span
             = tag.tag
@@ -23,3 +23,8 @@ div
         td
           button.reject
             | reject
+div
+  = form_for :tag, html: {id: "moderation_form"} do
+    = text_field(:tag, :id, {type: 'hidden'})
+    = hidden_field_tag(:moderation_action, "")
+
