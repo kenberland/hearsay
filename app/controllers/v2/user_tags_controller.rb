@@ -93,6 +93,13 @@ class V2::UserTagsController < ApplicationController
 
   private
 
+  def remove_phone_number_registration_id(tag)
+    return unless tag
+    tag = JSON.parse(tag.to_json)
+    tag.delete('phone_number_registration_id')
+    tag
+  end
+
   def render_index(new_tag = nil)
     user_number = Phony.normalize(params[:user_id], cc: '1')
 
@@ -120,7 +127,7 @@ class V2::UserTagsController < ApplicationController
       }
     end
     render json: { tags: user_cloud,
-                   new_tag: new_tag,
+                   new_tag: remove_phone_number_registration_id(new_tag),
                    registered: is_registered(user_number)
                  }
   end
@@ -147,6 +154,6 @@ class V2::UserTagsController < ApplicationController
 
   def create_new_tag(name, category)
     tc = TagCategory.find_by_category category
-    Tag.find_or_create_by({ tag: name, tag_category: tc }) rescue ActiveRecord::RecordNotUnique
+    new_tag = Tag.find_or_create_by({ tag: name, tag_category: tc, phone_number_registration: registration }) rescue ActiveRecord::RecordNotUnique
   end
 end

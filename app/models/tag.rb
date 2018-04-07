@@ -4,6 +4,7 @@ class Tag < ActiveRecord::Base
   REJECTED = 2
 
   belongs_to :tag_category, class_name: 'TagCategory'
+  belongs_to :phone_number_registration, class_name: 'PhoneNumberRegistration'
   validates :tag, presence: true
   validates :tag, length: { minimum: 2, maximum: 24 }
 
