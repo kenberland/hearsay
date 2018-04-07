@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180328211610) do
+ActiveRecord::Schema.define(version: 20180404125552) do
 
   create_table "audits", force: :cascade do |t|
     t.integer  "auditable_id",       limit: 4
@@ -63,12 +63,13 @@ ActiveRecord::Schema.define(version: 20180328211610) do
   add_index "tag_categories", ["category"], name: "index_tag_categories_on_category", unique: true, using: :btree
 
   create_table "tags", force: :cascade do |t|
-    t.string   "tag",              limit: 255,             null: false
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.integer  "tag_category_id",  limit: 4
+    t.string   "tag",                           limit: 255,             null: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+    t.integer  "tag_category_id",               limit: 4
     t.boolean  "is_library_tag"
-    t.integer  "moderation_state", limit: 4,   default: 0
+    t.integer  "moderation_state",              limit: 4,   default: 0
+    t.integer  "phone_number_registrations_id", limit: 4
   end
 
   add_index "tags", ["is_library_tag"], name: "index_is_library_tag_on_tags", using: :btree
