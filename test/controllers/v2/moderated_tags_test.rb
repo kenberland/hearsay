@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class V2::ModeratedTagsTest < ActionDispatch::IntegrationTest
-  test 'exactly one new tag is returned when the tag is newly created' do
+  test 'new tag is UNMODERATED when created' do
     tag_category = random_tag_category
     target_user = target_phone_number
     my_tag = Faker::StarWars.character
@@ -15,6 +15,7 @@ class V2::ModeratedTagsTest < ActionDispatch::IntegrationTest
                              user_tags_url(target_user),
                              parameters = params
                             )
+    debugger;1
     assert_equal(Hash, JSON.parse(response.body)["new_tag"].class)
     assert_equal(Tag.last.id, JSON.parse(response.body)["new_tag"]["id"])
   end
