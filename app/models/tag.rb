@@ -3,7 +3,6 @@ class Tag < ActiveRecord::Base
   APPROVED = 1
   REJECTED = 2
 
-  audited
   belongs_to :tag_category, class_name: 'TagCategory'
   validates :tag, presence: true
   validates :tag, length: { minimum: 2, maximum: 24 }
