@@ -96,6 +96,8 @@ class V2::UserTagsController < ApplicationController
   def remove_phone_number_registration_id(tag)
     return unless tag
     tag = JSON.parse(tag.to_json)
+    tag[:is_tag_creator] = registration.id == tag['phone_number_registration_id']
+    tag['moderation_state'] = Tag::moderation_text(tag['moderation_state'])
     tag.delete('phone_number_registration_id')
     tag
   end
@@ -149,7 +151,13 @@ class V2::UserTagsController < ApplicationController
   end
 
   def count(user_id)
-    UserTag.where(to_user_uid: user_id).group([:to_user_uid, :from_user_uid, :tag_id]).order('count_tag_id desc').count(:tag_id)
+    UserTag.where(to_user_uid: user_id)
+      .group([
+               :to_user_uid,
+               :from_user_uid, :tag_id
+             ])
+      .order('count_tag_id desc')
+      .count(:tag_id)
   end
 
   def create_new_tag(name, category)

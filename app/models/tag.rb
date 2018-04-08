@@ -5,6 +5,7 @@ class Tag < ActiveRecord::Base
 
   belongs_to :tag_category, class_name: 'TagCategory'
   belongs_to :phone_number_registration, class_name: 'PhoneNumberRegistration'
+  belongs_to :user_tag
   validates :tag, presence: true
   validates :tag, length: { minimum: 2, maximum: 24 }
 
@@ -22,6 +23,17 @@ class Tag < ActiveRecord::Base
 
   def moderation_text
     case self.moderation_state
+    when UNMODERATED
+      'unmoderated'
+    when APPROVED
+      'approved'
+    else
+      'rejected'
+    end
+  end
+
+  def self.moderation_text moderation_state
+    case moderation_state
     when UNMODERATED
       'unmoderated'
     when APPROVED

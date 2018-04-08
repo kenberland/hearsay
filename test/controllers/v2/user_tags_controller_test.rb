@@ -235,6 +235,23 @@ class V2::UserTagsControllerTest < ActionDispatch::IntegrationTest
     assert_equal(Hash, JSON.parse(response.body)["new_tag"].class)
     assert_equal(Tag.last.id, JSON.parse(response.body)["new_tag"]["id"])
   end
+  test 'new tag shows it is unmoderated and is_tag_creator=true' do
+    tag_category = random_tag_category
+    target_user = target_phone_number
+    my_tag = Faker::StarWars.character
+    reg = FactoryGirl.create(:phone_number_registration, :verified)
+    params = { 'currentUser' => reg.device_uuid, tag: {
+                 newTag: my_tag,
+                 category: random_tag_category
+               }
+             }
+    hearsay_xml_http_request(:post,
+                             user_tags_url(target_user),
+                             parameters = params
+                            )
+    assert_equal(true, JSON.parse(response.body)['new_tag']['is_tag_creator'])
+    assert_equal('unmoderated', JSON.parse(response.body)['new_tag']['moderation_state'])
+  end
   test 'send is_current_user=true when the tags are requested by the current _user' do
     my_tag = random_tag
     my_target = normalized_fake_number

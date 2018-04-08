@@ -8,15 +8,19 @@ class V3::UserTagsController < ApplicationController
 to_user_uid, LEFT(tags.tag,24) as tagname,
 tags.id as tag_id, tag_categories.category,
 (to_user_uid = '#{from_phone}'
-|| from_user_uid ='#{from_device_uuid}') as `can_delete`
+|| from_user_uid ='#{from_device_uuid}') as `can_delete`,
+tags.moderation_state,
+tags.phone_number_registration_id = #{registration.id} as is_tag_creator
 EOD
     r = UserTag.where(to_user_uid: user_lut.keys)
       .joins(tag: :tag_category)
       .select(select_sql)
       .collect{|r| { to_user_uid: r.to_user_uid, tag_id: r.tag_id,
                      name: r.tagname, category: r.category,
-                     is_current_user: r.can_delete == 1 } }
-
+                     is_current_user: r.can_delete == 1,
+                     moderation_state: Tag::moderation_text(r.moderation_state),
+                     is_tag_creator: r.is_tag_creator
+               } }
     r = r.each_with_object({}) do |v, h|
       target = user_lut[v[:to_user_uid]]
       unless h.has_key?(target)
