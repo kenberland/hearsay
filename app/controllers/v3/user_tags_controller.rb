@@ -19,7 +19,7 @@ EOD
                      name: r.tagname, category: r.category,
                      is_current_user: r.can_delete == 1,
                      moderation_state: Tag::moderation_text(r.moderation_state),
-                     is_tag_creator: r.is_tag_creator
+                     is_tag_creator: r.is_tag_creator == 0 ? false : true
                } }
     r = r.each_with_object({}) do |v, h|
       target = user_lut[v[:to_user_uid]]
