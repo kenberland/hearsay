@@ -18,7 +18,7 @@ class SeedMe
   end
 
   def make_tag(category, tag)
-    Tag.find_or_create_by(tag: tag, tag_category_id: category.id, is_library_tag: true)
+    Tag.find_or_create_by(tag: tag, tag_category_id: category.id, is_library_tag: true, moderation_state: 1, phone_number_registration_id: 1)
   end
 
   def seed
@@ -26,6 +26,7 @@ class SeedMe
       b.local_variable_set category.to_sym, TagCategory.find_or_create_by(category: category)
       make_tags_for_category(b.eval(category))
     end
+    PhoneNumberRegistration.create(device_phone_number: '12125551212', device_uuid: 'deadbeefdeadbeef', verification_state: 1, verification_code: 'abcd')
   end
 end
 

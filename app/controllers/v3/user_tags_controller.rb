@@ -10,7 +10,7 @@ tags.id as tag_id, tag_categories.category,
 (to_user_uid = '#{from_phone}'
 || from_user_uid ='#{from_device_uuid}') as `can_delete`,
 tags.moderation_state,
-tags.phone_number_registration_id = #{registration.id} as is_tag_creator
+tags.phone_number_registration_id = #{registration.id rescue 0} as is_tag_creator
 EOD
     r = UserTag.where(to_user_uid: user_lut.keys)
       .joins(tag: :tag_category)
