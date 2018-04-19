@@ -125,7 +125,9 @@ class V2::UserTagsController < ApplicationController
         count: value[:count],
         name: tag.tag,
         is_current_user: is_current_user,
-        tagId: key
+        tagId: key,
+        is_tag_creator: true,
+        moderation_state: tag.moderation_text
       }
     end
     render json: { tags: user_cloud,
